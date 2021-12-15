@@ -1,0 +1,16 @@
+int $x ();
+int $b ();
+string $d ();
+bool $bValue ();
+
+starting
+$x -> 10;
+$bValue -> 0X;
+$d -> hello;
+($x * $b);
+($x + $b);
+($x / $b);
+($x - $b);
+(($x - $b) + $b);
+(((($x - $b) + $b)/$x)-10);
+ending
