@@ -18,7 +18,7 @@ int intval;
 char* strval;
 }
 
-%token STRING CARACTER INTEGER FLOAT CHAR BOOL VOID CLASA CONSTANT PUBLIC PRIVAT DECLARATION_SECTION CUSTOMTYPES_SECTION MAIN_SECTION ASIGNARE PARANTEZAPATRATADESCHISA PARANTEZAPATRATAINCHISA PARANTEZAROTUNDADESCHISA PARANTEZAROTUNDAINCHISA PUNCTSIVIRGULA VIRGULA IFSTMT ELSESTMT FORSTMT DOSTMT WHILESTMT RETURNSTMT PRINT BOOLEAN_AND BOOLEAN_OR BOOLEAN_NOT BOOLEAN_LT BOOLEAN_LTE BOOLEAN_GTE BOOLEAN_EQ BOOLEAN_NEQ ARITMETIC_ADD ARITMETIC_INCREMENT ARITMETIC_SUB ARITMETIC_DECREMENT ARITMETIC_DIV ARITMETIC_MUL ARITMETIC_POW IDENTIFICATOR BOOL_TRUE BOOL_FALSE NUMAR NUMAR_FLOAT QUOTES_STRING ACOLADADESCHISA ACOLADAINCHISA ASSIGN
+%token STRING CARACTER INTEGER FLOAT CHAR BOOL VOID CLASA CONSTANT PUBLIC PRIVAT DECLARATION_SECTION CUSTOMTYPES_SECTION MAIN_SECTION ASIGNARE PARANTEZAPATRATADESCHISA PARANTEZAPATRATAINCHISA PARANTEZAROTUNDADESCHISA PARANTEZAROTUNDAINCHISA PUNCTSIVIRGULA VIRGULA IFSTMT ELSESTMT FORSTMT DOSTMT WHILESTMT RETURNSTMT PRINT BOOLEAN_AND BOOLEAN_OR BOOLEAN_NOT BOOLEAN_LT BOOLEAN_LTE BOOLEAN_GTE BOOLEAN_EQ BOOLEAN_NEQ ARITMETIC_ADD ARITMETIC_INCREMENT ARITMETIC_SUB ARITMETIC_DECREMENT ARITMETIC_DIV ARITMETIC_MUL ARITMETIC_POW IDENTIFICATOR BOOL_TRUE BOOL_FALSE NUMAR NUMAR_FLOAT QUOTES_STRING ACOLADADESCHISA ACOLADAINCHISA ASSIGN NUME_ARBITRAR
 
 %start corect
 
@@ -32,11 +32,10 @@ corect: program {printf("program corect sintactic\n");}
      ;
 
 
-program: declaratii_globale declaratii_tipuri_custom
-     // declaratii_globale declaratii_tipuri_custom main
-     // | declaratii_globale main
-     // | declaratii_tipuri_custom main
-     // | main 
+program: declaratii_globale declaratii_tipuri_custom main
+     | declaratii_globale main
+     | declaratii_tipuri_custom main
+     | main 
      ;
 
 //__global__
@@ -46,19 +45,35 @@ declaratii_globale : DECLARATION_SECTION declaratie
 
 //__custom_types__
 declaratii_tipuri_custom : CUSTOMTYPES_SECTION clasa
+     | CUSTOMTYPES_SECTION functii
      | declaratii_tipuri_custom clasa
+     | declaratii_tipuri_custom functii
      ;
 
-//__main__
+//main
+main : MAIN_SECTION bloc_cod
 
 
 //Object data {cod}
-clasa: CLASA IDENTIFICATOR ACOLADADESCHISA declaratie_clasa ACOLADAINCHISA
+clasa: CLASA NUME_ARBITRAR ACOLADADESCHISA declaratie_clasa ACOLADAINCHISA PUNCTSIVIRGULA
      ;
 
 //descriem declaratia unei clase:
-declaratie_clasa: declaratie_in_clasa ;
-     //functii
+declaratie_clasa: declaratie_in_clasa functii
+               | declaratie_in_clasa
+               | functii
+               ;
+
+functii: INTEGER NUME_ARBITRAR PARANTEZAPATRATADESCHISA lista_argumente PARANTEZAPATRATAINCHISA 
+ACOLADADESCHISA bloc_cod ACOLADAINCHISA
+
+lista_argumente: declaratie_tip
+               | lista_argumente VIRGULA declaratie_tip
+               ;
+
+//to be updated
+bloc_cod: declaratie
+     ;
 
 // Readonly sau declaratie_tip;
 declaratie: CONSTANT declaratie_tip PUNCTSIVIRGULA

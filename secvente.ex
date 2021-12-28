@@ -15,8 +15,23 @@ Int $xx;
 
 __custom_types__
 
-Object $Mercedes
+
+Int TiALuatMaTa[Int $hello, Int $world]
+{
+    Int $x -> 10;
+}
+
+
+Object Mercedes
 {
     public Int $x;
     private Float $data -> 14.3252;
-}
+
+    Int TiALuatMaTa[Int $hello, Int $world]
+    {
+        Int $x -> 10;
+    }
+};
+
+__main__
+Int $y;

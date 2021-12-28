@@ -61,9 +61,10 @@
 "**" {return ARITMETIC_POW;}
 
 
-$[_a-zA-Z][_a-zA-Z0-9]* {yylval.strval=strdup(yytext);return IDENTIFICATOR;}
 "True" {return BOOL_TRUE;}
 "False" {return BOOL_FALSE;}
+$[_a-zA-Z][_a-zA-Z0-9]* {yylval.strval=strdup(yytext);return IDENTIFICATOR;}
+[_a-zA-Z][_a-zA-Z0-9]* {return NUME_ARBITRAR;}
 [0-9]+ { return NUMAR;}
 [0-9]+.[0-9]+ { return NUMAR_FLOAT;}
 \"[a-zA-Z0-9 ]+\" {yylval.strval=strdup(yytext); return QUOTES_STRING;}
