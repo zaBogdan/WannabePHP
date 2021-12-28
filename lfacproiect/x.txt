@@ -1,0 +1,44 @@
+bmw e46 = 7;
+bmw e90 = e46;
+bmw e60 = e90;
+audi a8;
+checkEngine golf4 = true;
+checkEngine golf6 = false;
+
+dacia super = "nova";
+dacia solenza = "1310";
+
+mercedes principal (){
+    e46=5;
+    e90=e46;
+    e46++;
+    e90+=((e46*10 + 4) * 2) - 3;
+    afiseaza(e90);
+    afiseaza(e46);
+    afiseaza(e60);
+
+    a8=24;
+    afiseaza(a8);
+
+    if(e46<0)
+
+    afiseaza(e90);
+
+    golf6 = true & false;
+
+    solenza CONCAT super;
+    
+    e46 = LEN solenza;
+    
+    afiseaza(e46);
+    
+    e90 = solenza CMP super;
+    
+    afiseaza(e90);
+    
+    a8 = super IS IN solenza;
+
+
+    afiseaza(a8);
+
+}

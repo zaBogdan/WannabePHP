@@ -1,3 +1,102 @@
+Predefined types  ( int , float, char,  string, bool), array types  and user defined data types 
+(similar to classes in object orientated languages, but with your own syntax); provide specific 
+syntax to allow initialization and use of variables of user defined types 0.5pt;
+
+Int $x; //1,2,3,4,5
+Float $y; //1.1234
+Char $z; // 'a'
+String $a1; // "abcde"
+Bool $a2; // 00 | 0X
+
+Int $x (1,2,3,4,5,6);
+
+Object <name>
+{
+    public int $x;
+
+    private int $y;
+};
+
+int $x -> 1;
+
+variable declarations/definition, constant definitions, function definitions 0.5pt;
+
+Readonly Int $x; //constantele
+
+
+//function definitions
+<type> <nume> [<parametrii,>]
+{
+    //cod
+}
+
+
+//control statements (if, for, while, etc.), assignment statements 0.25;
+daca[<expresie>]
+{
+    //cod
+}altfel
+{
+    //cod
+}
+
+pentru[<iteratoru>; <conditie stop>; <conditie inainte>]
+{
+    //cod
+}
+
+catTimp[<expresie>]
+{
+    //cod
+}
+
+executa
+{
+    //cod
+}catTimp[<expresie>]
+
+//arithmetic and boolean expressions 1.5pt
+
+x*x
+x+x
+x-x
+x/x
+
+//boolene
+x&x
+x|x
+x^x
+x===x
+x!==x
+x<=x
+x>=x
+
+// function calls which can have as parameters: expressions, other function calls, identifiers,
+constants,etc.
+
+Print(GetFunction($x))
+Print(5*$x+10)
+
+//Your programs should be structured in 3 sections: one section for global variables, another section for functions and user 
+//defined data types and a special function representing the entry point of the programm
+
+begin_global
+//variabilele globale
+end_global
+
+begin_custom_types
+
+end_custom_types
+
+__main__
+
+
+
+
+
+
+
+
 int $x ();
 int $b ();
 string $d ();

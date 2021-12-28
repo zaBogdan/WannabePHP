@@ -1,0 +1,8 @@
+variabile clasamea : [bmw] ma , 
+functii clasamea : [bmw] functeiinclasamea , 
+
+variabile global : [bmw] a , 
+functii global : 
+
+Functiile declarate sunt:
+[bmw] functeiinclasamea (bmw, bmw)
