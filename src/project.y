@@ -4,7 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "functii.h"
+#include "functions.h"
 extern FILE* yyin;
 extern char* yytext;
 extern int yylineno;
@@ -13,10 +13,9 @@ extern int yylineno;
 %union {
      int num;
      char* value;
-     struct memValue returnData;
 }
 
-%token STRING CARACTER INTEGER FLOAT CHAR BOOL VOID CLASA CONSTANT PUBLIC PRIVAT DECLARATION_SECTION CUSTOMTYPES_SECTION MAIN_SECTION ASIGNARE PARANTEZAPATRATADESCHISA PARANTEZAPATRATAINCHISA PARANTEZAROTUNDADESCHISA PARANTEZAROTUNDAINCHISA PUNCTSIVIRGULA VIRGULA IFSTMT ELSESTMT FORSTMT DOSTMT WHILESTMT RETURNSTMT PRINT BOOLEAN_AND BOOLEAN_OR BOOLEAN_NOT BOOLEAN_LT BOOLEAN_LTE BOOLEAN_GTE BOOLEAN_EQ BOOLEAN_NEQ ARITMETIC_ADD ARITMETIC_INCREMENT ARITMETIC_SUB ARITMETIC_DECREMENT ARITMETIC_DIV ARITMETIC_MUL ARITMETIC_POW IDENTIFICATOR BOOL_TRUE BOOL_FALSE QUOTES_STRING ACOLADADESCHISA ACOLADAINCHISA ASSIGN NUME_ARBITRAR
+%token STRING CARACTER INTEGER FLOAT CHAR BOOL VOID CLASA CONSTANT PUBLIC PRIVAT DECLARATION_SECTION CUSTOMTYPES_SECTION MAIN_SECTION ASIGNARE PARANTEZAPATRATADESCHISA PARANTEZAPATRATAINCHISA PARANTEZAROTUNDADESCHISA PARANTEZAROTUNDAINCHISA PUNCTSIVIRGULA VIRGULA IFSTMT ELSESTMT FORSTMT DOSTMT WHILESTMT RETURNSTMT PRINT BOOLEAN_AND BOOLEAN_OR BOOLEAN_NOT BOOLEAN_LT BOOLEAN_LTE BOOLEAN_GTE BOOLEAN_EQ BOOLEAN_NEQ ARITMETIC_ADD ARITMETIC_INCREMENT ARITMETIC_SUB ARITMETIC_DECREMENT ARITMETIC_DIV ARITMETIC_MUL ARITMETIC_POW IDENTIFICATOR BOOL_TRUE BOOL_FALSE QUOTES_STRING ACOLADADESCHISA ACOLADAINCHISA ASSIGN NUME_ARBITRAR 
 
 %start corect
 
@@ -35,10 +34,6 @@ extern int yylineno;
 %token <value> NUMAR_FLOAT
 %type <value> QUOTES_STRING
 
-%type <returnData> declaratie_tip
-%type <returnData> declaratie
-
-
 %%
 corect: program {printf("program corect sintactic\n");}
      ;
@@ -51,7 +46,7 @@ program: declaratii_globale declaratii_tipuri_custom main
      ;
 
 //__global__
-declaratii_globale : {strcpy(currentScope, "global");} DECLARATION_SECTION declaratie 
+declaratii_globale : {switchContext("global");} DECLARATION_SECTION declaratie 
      | declaratii_globale declaratie
      ;
 
@@ -63,21 +58,25 @@ declaratii_tipuri_custom : CUSTOMTYPES_SECTION clasa
      ;
 
 //main
-main : {strcpy(currentScope, "main");} MAIN_SECTION bloc_cod
+main : {switchContext("main");} MAIN_SECTION bloc_cod
 
 
 //Object data {cod}
-clasa: CLASA NUME_ARBITRAR {ChangeScopeToClass($2);} ACOLADADESCHISA declaratie_clasa ACOLADAINCHISA PUNCTSIVIRGULA
+clasa: CLASA NUME_ARBITRAR {class_enter($2);} ACOLADADESCHISA declaratie_clasa ACOLADAINCHISA PUNCTSIVIRGULA {class_leave();} 
      ;
 
 //descriem declaratia unei clase:
-declaratie_clasa: declaratie_in_clasa functii
+declaratie_clasa: declaratie_in_clasa multiple_functions
                | declaratie_in_clasa
+               | multiple_functions
+               ;
+
+multiple_functions: multiple_functions functii
                | functii
                ;
 
-functii: INTEGER NUME_ARBITRAR {FunctionInsideClass($2);} PARANTEZAPATRATADESCHISA lista_argumente PARANTEZAPATRATAINCHISA 
-ACOLADADESCHISA bloc_cod ACOLADAINCHISA
+functii: INTEGER NUME_ARBITRAR {function_enter($2);} PARANTEZAPATRATADESCHISA lista_argumente PARANTEZAPATRATAINCHISA 
+ACOLADADESCHISA bloc_cod ACOLADAINCHISA {function_leave();}
 
 lista_argumente: declaratie_tip
                | lista_argumente VIRGULA declaratie_tip
@@ -85,11 +84,17 @@ lista_argumente: declaratie_tip
 
 //to be updated
 bloc_cod: declaratie
+     | bloc_cod declaratie
      ;
 
+
+//a function to print
+// print_function: PRINT PARANTEZAROTUNDADESCHISA QUOTES_STRING parametru_print PARANTEZAROTUNDAINCHISA
+               ;
+
 // Readonly sau declaratie_tip;
-declaratie: CONSTANT declaratie_tip PUNCTSIVIRGULA {$$ = setConstant($2);}
-          | declaratie_tip PUNCTSIVIRGULA {$$ = $1;}
+declaratie: CONSTANT {constat_enter();} declaratie_tip {constat_leave();} PUNCTSIVIRGULA
+          | declaratie_tip PUNCTSIVIRGULA
           ;
 
 //avem de tipul public/privat
@@ -100,21 +105,22 @@ declaratie_in_clasa: PUBLIC declaratie
           ;
 
 // Int $x -> 10 (la fel pentru float, string, char, bool)
-declaratie_tip: INTEGER IDENTIFICATOR { $$ = constructValue($1, $2, 0); }
-          | INTEGER IDENTIFICATOR ASSIGN NUMAR { $$ = constructValue($1, $2, $4); }
-          | FLOAT IDENTIFICATOR { $$ = constructValue($1, $2, 0); }
-          | FLOAT IDENTIFICATOR ASSIGN NUMAR_FLOAT { $$ = constructValue($1, $2, $4); }
-          | CHAR IDENTIFICATOR { $$ = constructValue($1, $2, 0); }
-          | CHAR IDENTIFICATOR ASSIGN CARACTER { $$ = constructValue($1, $2, $4); }
-          | STRING IDENTIFICATOR { $$ = constructValue($1, $2, 0); }
-          | STRING IDENTIFICATOR ASSIGN QUOTES_STRING { $$ = constructValue($1, $2, $4); }
-          | BOOL IDENTIFICATOR { $$ = constructValue($1, $2, 0); }
-          | BOOL IDENTIFICATOR ASSIGN BOOL_FALSE { $$ = constructValue($1, $2, $4); }
-          | BOOL IDENTIFICATOR ASSIGN BOOL_TRUE { $$ = constructValue($1, $2, $4); }
+declaratie_tip: INTEGER IDENTIFICATOR { DeclareValue($1, $2, "", false); }
+          | INTEGER IDENTIFICATOR ASSIGN NUMAR { DeclareValue($1, $2, $4, true); }
+          | FLOAT IDENTIFICATOR { DeclareValue($1, $2, "", false); }
+          | FLOAT IDENTIFICATOR ASSIGN NUMAR_FLOAT { DeclareValue($1, $2, $4, true); }
+          | CHAR IDENTIFICATOR { DeclareValue($1, $2, "", false); }
+          | CHAR IDENTIFICATOR ASSIGN CARACTER { DeclareValue($1, $2, $4, true); }
+          | STRING IDENTIFICATOR { DeclareValue($1, $2, "", false); }
+          | STRING IDENTIFICATOR ASSIGN QUOTES_STRING { DeclareValue($1, $2, $4, true); }
+          | BOOL IDENTIFICATOR { DeclareValue($1, $2, "", false); }
+          | BOOL IDENTIFICATOR ASSIGN BOOL_FALSE { DeclareValue($1, $2, $4, true); }
+          | BOOL IDENTIFICATOR ASSIGN BOOL_TRUE { DeclareValue($1, $2, $4, true); }
           ;
 %%
 void yyerror(char * s){
-     printf("eroare: %s la linia:%d\n",s,yylineno);
+     printf("Compile error at line: %d\nError: %s\n",yylineno, s);
+     exit(1);
 }
 
 int main(int argc, char** argv){

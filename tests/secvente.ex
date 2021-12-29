@@ -18,20 +18,27 @@ __custom_types__
 
 Int TiALuatMaTa[Int $hello, Int $world]
 {
-    Int $x -> 10;
+    Int $xxx -> 10;
 }
 
 
 Object Mercedes
 {
-    public Int $x;
-    private Float $data -> 14.3252;
+    public Int $xxxx;
+    private Float $data2 -> 14.3252;
 
-    Int TiALuatMaTa[Int $hello, Int $world]
+    Int Hello[Int $world4, Int $data5]
     {
-        Int $x -> 10;
+        Int $jajaja->10;
+    }
+
+    Int TiALuatMaTa[Int $helloWorld, Int $world2]
+    {
+        Int $xulescu -> 10;
     }
 };
 
 __main__
-Int $y;
+Int $yred;
+Int $z;
+Int $w;
