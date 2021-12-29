@@ -83,14 +83,18 @@ lista_argumente: declaratie_tip
                ;
 
 //to be updated
-bloc_cod: declaratie
-     | bloc_cod declaratie
-     ;
+bloc_cod: bloc
+     | bloc_cod bloc
 
+bloc: asginare_variabila
+     | declaratie
 
-//a function to print
-// print_function: PRINT PARANTEZAROTUNDADESCHISA QUOTES_STRING parametru_print PARANTEZAROTUNDAINCHISA
-               ;
+asginare_variabila: IDENTIFICATOR ASSIGN NUMAR PUNCTSIVIRGULA    {AssignVariable($1, $3);}
+     | IDENTIFICATOR ASSIGN NUMAR_FLOAT PUNCTSIVIRGULA           {AssignVariable($1, $3);}
+     | IDENTIFICATOR ASSIGN CARACTER PUNCTSIVIRGULA              {AssignVariable($1, $3);}
+     | IDENTIFICATOR ASSIGN QUOTES_STRING PUNCTSIVIRGULA         {AssignVariable($1, $3);}
+     | IDENTIFICATOR ASSIGN BOOL_FALSE PUNCTSIVIRGULA            {AssignVariable($1, $3);}
+     | IDENTIFICATOR ASSIGN BOOL_TRUE PUNCTSIVIRGULA             {AssignVariable($1, $3);}
 
 // Readonly sau declaratie_tip;
 declaratie: CONSTANT {constat_enter();} declaratie_tip {constat_leave();} PUNCTSIVIRGULA
@@ -105,17 +109,17 @@ declaratie_in_clasa: PUBLIC declaratie
           ;
 
 // Int $x -> 10 (la fel pentru float, string, char, bool)
-declaratie_tip: INTEGER IDENTIFICATOR { DeclareValue($1, $2, "", false); }
-          | INTEGER IDENTIFICATOR ASSIGN NUMAR { DeclareValue($1, $2, $4, true); }
-          | FLOAT IDENTIFICATOR { DeclareValue($1, $2, "", false); }
-          | FLOAT IDENTIFICATOR ASSIGN NUMAR_FLOAT { DeclareValue($1, $2, $4, true); }
-          | CHAR IDENTIFICATOR { DeclareValue($1, $2, "", false); }
-          | CHAR IDENTIFICATOR ASSIGN CARACTER { DeclareValue($1, $2, $4, true); }
-          | STRING IDENTIFICATOR { DeclareValue($1, $2, "", false); }
-          | STRING IDENTIFICATOR ASSIGN QUOTES_STRING { DeclareValue($1, $2, $4, true); }
-          | BOOL IDENTIFICATOR { DeclareValue($1, $2, "", false); }
-          | BOOL IDENTIFICATOR ASSIGN BOOL_FALSE { DeclareValue($1, $2, $4, true); }
-          | BOOL IDENTIFICATOR ASSIGN BOOL_TRUE { DeclareValue($1, $2, $4, true); }
+declaratie_tip: INTEGER IDENTIFICATOR                  { DeclareValue($1, $2, "", false); }
+          | INTEGER IDENTIFICATOR ASSIGN NUMAR         { DeclareValue($1, $2, $4, true); }
+          | FLOAT IDENTIFICATOR                        { DeclareValue($1, $2, "", false); }
+          | FLOAT IDENTIFICATOR ASSIGN NUMAR_FLOAT     { DeclareValue($1, $2, $4, true); }
+          | CHAR IDENTIFICATOR                         { DeclareValue($1, $2, "", false); }
+          | CHAR IDENTIFICATOR ASSIGN CARACTER         { DeclareValue($1, $2, $4, true); }
+          | STRING IDENTIFICATOR                       { DeclareValue($1, $2, "", false); }
+          | STRING IDENTIFICATOR ASSIGN QUOTES_STRING  { DeclareValue($1, $2, $4, true); }
+          | BOOL IDENTIFICATOR                         { DeclareValue($1, $2, "", false); }
+          | BOOL IDENTIFICATOR ASSIGN BOOL_FALSE       { DeclareValue($1, $2, $4, true); }
+          | BOOL IDENTIFICATOR ASSIGN BOOL_TRUE        { DeclareValue($1, $2, $4, true); }
           ;
 %%
 void yyerror(char * s){

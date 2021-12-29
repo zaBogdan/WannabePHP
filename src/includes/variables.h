@@ -15,17 +15,23 @@ void constat_leave()
      constVariabile = false;
 }
 
-void CheckIdentifier(char* key)
+/**
+ * @brief Checks if the key of an identifier is already declared
+ * 
+ * @param key the name
+ * @return true if the key exists
+ * @return false otherwise
+ */
+bool CheckIdentifier(char* key, bool throwError)
 {
      for(int idx = 0; idx < allKeysIDX; idx++)
      {
           if(!strcmp(allKeys[idx], key))
           {
-               char error[200];
-               sprintf(error, "Identifier '%s' has been already declared. Try to be more creative!", key);
-               yyerror(error);
+                    return true;
           }
      }
+     return false;
 }
 
 void AddIdentifier(char* key)
@@ -58,11 +64,25 @@ void SetVariabileInFunctionContext(struct Identifier id)
      
 }
 
+void AssignVariable(char* key, char* value)
+{
+     if(!CheckIdentifier(key, false))
+     {
+          char error[200];
+          sprintf(error, "Found an undeclared identifier '%s'. You first have to declare before initialize a value.", key);
+          yyerror(error);
+     }
+}
 
 void DeclareValue(char* dataType, char* key, char* value, bool _isIntialized)
 {
      //checking if in the same scope we have this variable declared.
-     CheckIdentifier(key);
+     if(CheckIdentifier(key, true))
+     {
+          char error[200];
+          sprintf(error, "Identifier '%s' has been already declared. Try to be more creative!", key);
+          yyerror(error);
+     }
 
      struct Identifier newId;
      size_t keyLength = strlen(key);
