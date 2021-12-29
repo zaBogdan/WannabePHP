@@ -34,6 +34,12 @@ bool CheckIdentifier(char* key, bool throwError)
      return false;
 }
 
+
+/**
+ * @brief Adds an identifier to the global list
+ * 
+ * @param key the name of the identifier
+ */
 void AddIdentifier(char* key)
 {
      if(allKeysIDX > 1000)
@@ -46,23 +52,51 @@ void AddIdentifier(char* key)
      ++allKeysIDX;
 
 }
+
 void SetVariableInGlobalContext(struct Identifier id)
 {
-     printf("GLOBAL Context: %s, Name: %s, Constant: %d, Initialized: %d, Type: %d\n", id.scopeName, id.name, id.isConstant, id.isInitialized, id.type);
+     //add the identifier to the list
      AddIdentifier(id.name);
+     
+     globalScope[globalScopeIDX] = id;
+     ++globalScopeIDX;
 }
 
 void SetVariabileInObjectContext(struct Identifier id)
 {
      AddIdentifier(id.name);
+     objectScope[objectScopeIDX] = id;
+     ++objectScopeIDX;
      
 }
 
 void SetVariabileInFunctionContext(struct Identifier id)
 {
      AddIdentifier(id.name);
-     
+     functionScope[functionScopeIDX] = id;
+     ++functionScopeIDX;
 }
+
+
+char* GetTypeFromInt(int type)
+{
+     switch(type)
+     {
+          case TYPE_INTEGER:
+               return "integer";
+          case TYPE_FLOAT:
+               return "float";
+          case TYPE_CHAR:
+               return "character";
+          case TYPE_BOOL:
+               return "bool";
+          case TYPE_STRING:
+               return "string";
+          default:
+               return "VOID";
+     }
+}
+
 
 void AssignVariable(char* key, char* value)
 {
@@ -72,6 +106,7 @@ void AssignVariable(char* key, char* value)
           sprintf(error, "Found an undeclared identifier '%s'. You first have to declare before initialize a value.", key);
           yyerror(error);
      }
+     //here i will 100% need to split it into 3 contexts again.... 
 }
 
 void DeclareValue(char* dataType, char* key, char* value, bool _isIntialized)
@@ -152,5 +187,42 @@ void DeclareValue(char* dataType, char* key, char* value, bool _isIntialized)
           default:
                sprintf(error, "Failed to switch to a specific context. We are in '%s'", currentScope);
                yyerror(error);
+     }
+}
+
+
+void StandardFormat(struct Identifier current, char* msg)
+{
+     char type[200] = "";
+     if(current.isPrivate)
+     {
+          strncat(type, "private ",7);
+     }
+     if(current.isConstant)
+     {
+          strncat(type, "constant ",9);
+     }
+     char* strType = GetTypeFromInt(current.type);
+     strncat(type, strType, strlen(strType));
+     sprintf(msg, "[%s] Name: %s, Type: %s\n",current.scopeName,current.name, type);
+}
+
+void DumpVariablesToFile(FILE* file)
+{
+     char msg[200];
+     for(int idx=0;idx<globalScopeIDX;++idx)
+     {
+          StandardFormat(globalScope[idx], msg);
+          fprintf(file,"%s",msg);
+     }
+     for(int idx=0;idx<objectScopeIDX;++idx)
+     {
+          StandardFormat(objectScope[idx], msg);
+          fprintf(file,"%s",msg);
+     }
+     for(int idx=0;idx<functionScopeIDX;++idx)
+     {
+          StandardFormat(functionScope[idx], msg);
+          fprintf(file,"%s",msg);
      }
 }

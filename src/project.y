@@ -130,4 +130,6 @@ void yyerror(char * s){
 int main(int argc, char** argv){
      yyin=fopen(argv[1],"r");
      yyparse();
+     FILE* variableTable = fopen("symbol_table.txt", "w");
+     DumpVariablesToFile(variableTable);
 } 
