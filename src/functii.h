@@ -33,6 +33,24 @@ struct memValue{
 char currentScope[100];
 struct memValue globalScope[250], functionScope[250], objectScope[250];
 
+void ChangeScopeToClass(char* className)
+{
+     strncat(className, ".",1);
+     strcpy(currentScope, className);
+}
+
+void FunctionInsideClass(char* functionName)
+{
+     int len = strlen(currentScope);
+     if(currentScope[len-1] == '.')
+     {
+          //we are inside of a class
+          strncat(currentScope, functionName, strlen(functionName));
+     }else{
+          strcpy(currentScope, functionName);
+     }
+}
+
 struct memValue constructValue(char* tipDate , char* nume, char* initializam)
 {
      struct memValue definedType;

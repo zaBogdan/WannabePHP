@@ -67,7 +67,7 @@ main : {strcpy(currentScope, "main");} MAIN_SECTION bloc_cod
 
 
 //Object data {cod}
-clasa: CLASA NUME_ARBITRAR {strcpy(currentScope, $2);} ACOLADADESCHISA declaratie_clasa ACOLADAINCHISA PUNCTSIVIRGULA
+clasa: CLASA NUME_ARBITRAR {ChangeScopeToClass($2);} ACOLADADESCHISA declaratie_clasa ACOLADAINCHISA PUNCTSIVIRGULA
      ;
 
 //descriem declaratia unei clase:
@@ -76,7 +76,7 @@ declaratie_clasa: declaratie_in_clasa functii
                | functii
                ;
 
-functii: INTEGER NUME_ARBITRAR {strcpy(currentScope, $2);} PARANTEZAPATRATADESCHISA lista_argumente PARANTEZAPATRATAINCHISA 
+functii: INTEGER NUME_ARBITRAR {FunctionInsideClass($2);} PARANTEZAPATRATADESCHISA lista_argumente PARANTEZAPATRATAINCHISA 
 ACOLADADESCHISA bloc_cod ACOLADAINCHISA
 
 lista_argumente: declaratie_tip
