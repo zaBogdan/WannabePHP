@@ -1,16 +1,25 @@
 %{
 #include <stdio.h>
 #include <string.h>
+#ifndef _TYPES_H_
+#define _TYPES_H_
+#define TYPE_INTEGER 1
+#define TYPE_FLOAT 2
+#define TYPE_CHAR 3
+#define TYPE_STRING 4
+#define TYPE_BOOL 5
+#define TYPE_VOID 6
+#endif
 #include "y.tab.c"
 %}
 
 %%
-"Int" {yylval.strval = strdup(yytext); return INTEGER;}
-"Float" {return FLOAT;}
-"Char" {return CHAR;}
-"String" {return STRING;}
-"Boolean" {return BOOL;}
-"Void" {return VOID;}
+"Int" {yylval.value = strdup(yytext); return INTEGER;}
+"Float" {yylval.value = strdup(yytext);return FLOAT;}
+"Char" {yylval.value = strdup(yytext);return CHAR;}
+"String" {yylval.value = strdup(yytext);return STRING;}
+"Boolean" {yylval.value = strdup(yytext);return BOOL;}
+"Void" {yylval.value = strdup(yytext);return VOID;}
 
 "Object" {return CLASA;}
 "Readonly" {return CONSTANT;}
@@ -61,14 +70,14 @@
 "**" {return ARITMETIC_POW;}
 
 
-"True" {return BOOL_TRUE;}
-"False" {return BOOL_FALSE;}
-$[_a-zA-Z][_a-zA-Z0-9]* {yylval.strval=strdup(yytext);return IDENTIFICATOR;}
-[_a-zA-Z][_a-zA-Z0-9]* {return NUME_ARBITRAR;}
-[0-9]+ { return NUMAR;}
-[0-9]+.[0-9]+ { return NUMAR_FLOAT;}
-\"[a-zA-Z0-9 ]+\" {yylval.strval=strdup(yytext); return QUOTES_STRING;}
-\'[a-zA-Z]\' {yylval.strval=strdup(yytext); return CARACTER;}
+"True" {yylval.value=strdup(yytext);return BOOL_TRUE;}
+"False" {yylval.value=strdup(yytext);return BOOL_FALSE;}
+$[_a-zA-Z][_a-zA-Z0-9]* {yylval.value=strdup(yytext);return IDENTIFICATOR;}
+[_a-zA-Z][_a-zA-Z0-9]* {yylval.value=strdup(yytext);return NUME_ARBITRAR;}
+[0-9]+ {yylval.value=strdup(yytext); return NUMAR;}
+[0-9]+.[0-9]+ {yylval.value=strdup(yytext); return NUMAR_FLOAT;}
+\"[a-zA-Z0-9 ]+\" {yylval.value=strdup(yytext); return QUOTES_STRING;}
+\'[a-zA-Z]\' {yylval.value=strdup(yytext); return CARACTER;}
 
 
 [ \t] ;
