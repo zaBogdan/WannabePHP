@@ -97,6 +97,44 @@ char* GetTypeFromInt(int type)
      }
 }
 
+struct Identifier GetVariabileFromContext(char* key)
+{
+     //no matter of context we first check global variables
+     for(int idx=0;idx<globalScopeIDX;++idx)
+     {
+          if(!strcmp(globalScope[idx].name, key))
+               return globalScope[idx];
+     }
+     char error[200];
+     sprintf(error,"Couldn't the identifier '%s' in the current context (%s)", key, currentScope);
+
+     switch (GetCurrentContext())
+     {
+     //object context
+     case 1:
+          for(int idx=0;idx<objectScopeIDX;++idx)
+          {
+               //checking the name and the scope to!
+               if(!strcmp(objectScope[idx].name, key) && !strcmp(currentScope, objectScope[idx].scopeName))
+                    return objectScope[idx];
+          }
+          yyerror(error);
+
+     //function context
+     case 2:
+          for(int idx=0;idx<functionScopeIDX;++idx)
+          {
+               //also checking the name and the scope
+               if(!strcmp(functionScope[idx].name, key) && !strcmp(currentScope, functionScope[idx].scopeName))
+                    return functionScope[idx];
+          }
+          yyerror(error);
+
+     default:
+          yyerror(error);
+     }
+     return globalScope[0];
+}
 
 void AssignVariable(char* key, char* value)
 {
@@ -106,7 +144,10 @@ void AssignVariable(char* key, char* value)
           sprintf(error, "Found an undeclared identifier '%s'. You first have to declare before initialize a value.", key);
           yyerror(error);
      }
+     struct Identifier currentVariable = GetVariabileFromContext(key);
      //here i will 100% need to split it into 3 contexts again.... 
+
+     
 }
 
 void DeclareValue(char* dataType, char* key, char* value, bool _isIntialized)

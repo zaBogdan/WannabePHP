@@ -4,7 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "functions.h"
+#include "main.h"
 extern FILE* yyin;
 extern char* yytext;
 extern int yylineno;

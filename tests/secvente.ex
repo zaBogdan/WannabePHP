@@ -30,6 +30,8 @@ Object Mercedes
     Int Hello[Int $world4, Int $data5]
     {
         Int $jajaja->10;
+        $jajaja -> "string";
+        $world4 -> 10;
     }
 
     Int TiALuatMaTa[Int $helloWorld, Int $world2]
