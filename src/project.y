@@ -15,7 +15,7 @@ extern int yylineno;
      char* value;
 }
 
-%token STRING CARACTER INTEGER FLOAT CHAR BOOL VOID CLASA CONSTANT PUBLIC PRIVAT DECLARATION_SECTION CUSTOMTYPES_SECTION MAIN_SECTION ASIGNARE PARANTEZAPATRATADESCHISA PARANTEZAPATRATAINCHISA PARANTEZAROTUNDADESCHISA PARANTEZAROTUNDAINCHISA PUNCTSIVIRGULA VIRGULA IFSTMT ELSESTMT FORSTMT DOSTMT WHILESTMT RETURNSTMT PRINT BOOLEAN_AND BOOLEAN_OR BOOLEAN_NOT BOOLEAN_LT BOOLEAN_LTE BOOLEAN_GTE BOOLEAN_EQ BOOLEAN_NEQ ARITMETIC_ADD ARITMETIC_INCREMENT ARITMETIC_SUB ARITMETIC_DECREMENT ARITMETIC_DIV ARITMETIC_MUL ARITMETIC_POW IDENTIFICATOR BOOL_TRUE BOOL_FALSE QUOTES_STRING ACOLADADESCHISA ACOLADAINCHISA ASSIGN NUME_ARBITRAR 
+%token STRING CARACTER INTEGER FLOAT CHAR BOOL VOID CLASA CONSTANT PUBLIC PRIVAT DECLARATION_SECTION CUSTOMTYPES_SECTION MAIN_SECTION ASIGNARE PARANTEZAPATRATADESCHISA PARANTEZAPATRATAINCHISA PARANTEZAROTUNDADESCHISA PARANTEZAROTUNDAINCHISA PUNCTSIVIRGULA VIRGULA IFSTMT ELSESTMT FORSTMT DOSTMT WHILESTMT RETURNSTMT PRINT BOOLEAN_AND BOOLEAN_OR BOOLEAN_NOT BOOLEAN_LT BOOLEAN_LTE BOOLEAN_GTE BOOLEAN_EQ BOOLEAN_NEQ ARITMETIC_ADD ARITMETIC_INCREMENT ARITMETIC_SUB ARITMETIC_DECREMENT ARITMETIC_DIV ARITMETIC_MUL ARITMETIC_POW IDENTIFICATOR BOOL_TRUE BOOL_FALSE QUOTES_STRING ACOLADADESCHISA ACOLADAINCHISA ASSIGN NUME_ARBITRAR  PUNCT
 
 %start corect
 
@@ -46,8 +46,8 @@ program: declaratii_globale declaratii_tipuri_custom main
      ;
 
 //__global__
-declaratii_globale : {switchContext("global");} DECLARATION_SECTION declaratie 
-     | declaratii_globale declaratie
+declaratii_globale : {switchContext("global");} DECLARATION_SECTION declaratie PUNCTSIVIRGULA
+     | declaratii_globale declaratie PUNCTSIVIRGULA
      ;
 
 //__custom_types__
@@ -86,26 +86,46 @@ lista_argumente: declaratie_tip
 bloc_cod: bloc
      | bloc_cod bloc
 
-bloc: asginare_variabila
-     | declaratie
+bloc: asginare_variabila PUNCTSIVIRGULA
+     | apel_functie_din_clasa PUNCTSIVIRGULA
+     | apel_functie PUNCTSIVIRGULA
+     | declaratie PUNCTSIVIRGULA
 
-asginare_variabila: IDENTIFICATOR ASSIGN NUMAR PUNCTSIVIRGULA    {AssignVariable($1, $3);}
-     | IDENTIFICATOR ASSIGN NUMAR_FLOAT PUNCTSIVIRGULA           {AssignVariable($1, $3);}
-     | IDENTIFICATOR ASSIGN CARACTER PUNCTSIVIRGULA              {AssignVariable($1, $3);}
-     | IDENTIFICATOR ASSIGN QUOTES_STRING PUNCTSIVIRGULA         {AssignVariable($1, $3);}
-     | IDENTIFICATOR ASSIGN BOOL_FALSE PUNCTSIVIRGULA            {AssignVariable($1, $3);}
-     | IDENTIFICATOR ASSIGN BOOL_TRUE PUNCTSIVIRGULA             {AssignVariable($1, $3);}
+apel_functie_din_clasa: NUME_ARBITRAR PUNCT apel_functie
+
+apel_functie: NUME_ARBITRAR PARANTEZAPATRATADESCHISA list_arg_apel_functie PARANTEZAPATRATAINCHISA
+
+list_arg_apel_functie: argumente_functie
+          | list_arg_apel_functie VIRGULA argumente_functie
+          ;
+
+argumente_functie: apel_functie
+               | IDENTIFICATOR
+               | NUMAR
+               | NUMAR_FLOAT
+               | QUOTES_STRING
+               | BOOL_FALSE
+               | BOOL_TRUE
+               | CARACTER
+               ;
+
+asginare_variabila: IDENTIFICATOR ASSIGN NUMAR    {AssignVariable($1, $3);}
+     | IDENTIFICATOR ASSIGN NUMAR_FLOAT           {AssignVariable($1, $3);}
+     | IDENTIFICATOR ASSIGN CARACTER              {AssignVariable($1, $3);}
+     | IDENTIFICATOR ASSIGN QUOTES_STRING         {AssignVariable($1, $3);}
+     | IDENTIFICATOR ASSIGN BOOL_FALSE            {AssignVariable($1, $3);}
+     | IDENTIFICATOR ASSIGN BOOL_TRUE             {AssignVariable($1, $3);}
 
 // Readonly sau declaratie_tip;
-declaratie: CONSTANT {constat_enter();} declaratie_tip {constat_leave();} PUNCTSIVIRGULA
-          | declaratie_tip PUNCTSIVIRGULA
+declaratie: CONSTANT {constat_enter();} declaratie_tip {constat_leave();} 
+          | declaratie_tip
           ;
 
 //avem de tipul public/privat
-declaratie_in_clasa: PUBLIC declaratie
-          | PRIVAT declaratie
-          | declaratie_in_clasa PUBLIC declaratie
-          | declaratie_in_clasa PRIVAT declaratie
+declaratie_in_clasa: PUBLIC declaratie PUNCTSIVIRGULA
+          | PRIVAT declaratie PUNCTSIVIRGULA
+          | declaratie_in_clasa PUBLIC declaratie PUNCTSIVIRGULA
+          | declaratie_in_clasa PRIVAT declaratie PUNCTSIVIRGULA
           ;
 
 // Int $x -> 10 (la fel pentru float, string, char, bool)

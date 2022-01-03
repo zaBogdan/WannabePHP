@@ -30,6 +30,7 @@
 "}" {return ACOLADAINCHISA;}
 ";" {return PUNCTSIVIRGULA;}
 "," {return VIRGULA;}
+"." {return PUNCT;}
 
 
 "daca" {return IFSTMT;}
