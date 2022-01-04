@@ -7,6 +7,7 @@
 #define TYPE_VOID 6
 #define CHECK_BREAK(cond,flag, code) {if((cond)) { if((flag==true))(code); break;}}
 #include "structures.h"
+#include <stdlib.h>
 
 char currentScope[100];
 

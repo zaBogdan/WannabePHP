@@ -97,13 +97,30 @@ char* GetTypeFromInt(int type)
      }
 }
 
-struct Identifier GetVariabileFromContext(char* key)
+char* GetRootScope(char* currentScope)
+{
+     size_t len = strlen(currentScope);
+     char* data;
+     for(int i=0;i<len;++i)
+     {
+          if(currentScope[i] == '.')
+          {
+               data = malloc((i+2)*sizeof(char));
+               strncpy(data, currentScope, i+1);
+               data[i+2] = 0;
+               return data;
+          }
+     }
+     return NULL;
+}
+
+struct Identifier* GetVariabileFromContext(char* key)
 {
      //no matter of context we first check global variables
      for(int idx=0;idx<globalScopeIDX;++idx)
      {
           if(!strcmp(globalScope[idx].name, key))
-               return globalScope[idx];
+               return &globalScope[idx];
      }
      char error[200];
      sprintf(error,"Couldn't the identifier '%s' in the current context (%s)", key, currentScope);
@@ -115,8 +132,18 @@ struct Identifier GetVariabileFromContext(char* key)
           for(int idx=0;idx<objectScopeIDX;++idx)
           {
                //checking the name and the scope to!
-               if(!strcmp(objectScope[idx].name, key) && !strcmp(currentScope, objectScope[idx].scopeName))
-                    return objectScope[idx];
+               if(strcmp(objectScope[idx].name, key))
+                    continue;
+               if(!strcmp(currentScope, objectScope[idx].scopeName))
+                    return &objectScope[idx];
+               
+               //checking for the function not be inside a class
+               char* root = GetRootScope(currentScope);
+               if(root == NULL)
+                    continue;
+               if(!strcmp(root,objectScope[idx].scopeName))
+                    return &objectScope[idx];
+               
           }
           yyerror(error);
 
@@ -125,29 +152,96 @@ struct Identifier GetVariabileFromContext(char* key)
           for(int idx=0;idx<functionScopeIDX;++idx)
           {
                //also checking the name and the scope
-               if(!strcmp(functionScope[idx].name, key) && !strcmp(currentScope, functionScope[idx].scopeName))
-                    return functionScope[idx];
+               if(strcmp(functionScope[idx].name, key))
+                    continue;
+               //checking for scope name
+               if(!strcmp(currentScope, functionScope[idx].scopeName))
+                    return &functionScope[idx];
           }
           yyerror(error);
 
      default:
           yyerror(error);
      }
-     return globalScope[0];
+     return &globalScope[0];
 }
 
 void AssignVariable(char* key, char* value)
 {
+     char error[200];
      if(!CheckIdentifier(key, false))
      {
-          char error[200];
           sprintf(error, "Found an undeclared identifier '%s'. You first have to declare before initialize a value.", key);
           yyerror(error);
      }
-     struct Identifier currentVariable = GetVariabileFromContext(key);
-     //here i will 100% need to split it into 3 contexts again.... 
+     struct Identifier* currentVariable = GetVariabileFromContext(key);
 
-     
+     if(currentVariable->isConstant == true)
+     {
+          sprintf(error, "You can't modify a constant type (Readonly)");
+          yyerror(error);
+     }
+     //here i will 100% need to split it into 3 contexts again->... 
+     printf("[ AssignVariable ] Current variable is: %s with type: %d \n", currentVariable->name, currentVariable->type);
+     long int tempValue;
+     float tempFloatVal;
+     size_t size = strlen(value);
+
+     switch(currentVariable->type)
+     {
+          case TYPE_INTEGER:
+               tempValue = strtol(value, NULL,10);
+               if(tempValue == 0L)
+               {
+                    sprintf(error, "Invalid type assigned to variable '%s' (required type: integer)", key);
+                    yyerror(error);
+               }
+               currentVariable->value.number = tempValue;
+               break;
+          case TYPE_FLOAT:
+               tempFloatVal = strtof(value, NULL);
+               if(tempFloatVal == 0.0F)
+               {
+                    sprintf(error, "Invalid type assigned to variable '%s' (required type: float)", key);
+                    yyerror(error);
+               }
+               currentVariable->value.decimal = tempFloatVal;
+               break;
+          case TYPE_CHAR:
+               if(value[1] != 0)
+               {
+                    sprintf(error, "Invalid type assigned to variable '%s' (required type: char)", key);
+                    yyerror(error);
+               }
+               currentVariable->value.character = value[0];
+               break;
+          case TYPE_STRING:
+               if(value[0] != '"')
+               {
+                    sprintf(error, "Invalid type assigned to variable '%s' (required type: string)", key);
+                    yyerror(error);
+               }
+               currentVariable->value.string = malloc(size*sizeof(char));
+               strncpy(currentVariable->value.string, value+1, size-2);
+               break;
+
+          case TYPE_BOOL:
+               if(!strcmp(value, "True"))
+               {
+                    currentVariable->value.binar = true;
+                    break;
+               }
+               if(!strcmp(value, "False"))
+               {
+                    currentVariable->value.binar = false;
+                    break;
+               }
+               sprintf(error, "Invalid type assigned to variable '%s' (required type: boolean)", key);
+               yyerror(error);
+          default:
+               sprintf(error, "You are trying to assign to an invalid type.");
+               yyerror(error);
+     }
 }
 
 void DeclareValue(char* dataType, char* key, char* value, bool _isIntialized)

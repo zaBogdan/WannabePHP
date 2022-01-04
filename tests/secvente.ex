@@ -16,7 +16,7 @@ Int $xx;
 __custom_types__
 
 
-Int TiALuatMaTa[Int $hello, Int $world]
+Int PutereMotor[Int $hello, Int $world]
 {
     Int $xxx -> 10;
 }
@@ -30,11 +30,11 @@ Object Mercedes
     Int Hello[Int $world4, Int $data5]
     {
         Int $jajaja -> 10;
-        $jajaja -> "string";
+        $mere -> "ana are mere";
         $world4 -> 10;
     }
 
-    Int TiALuatMaTa[Int $helloWorld, Int $world2]
+    Int PutereMotor[Int $helloWorld, Int $world2]
     {
         Int $xulescu -> 10;
     }
@@ -45,5 +45,12 @@ Int $yred;
 Int $z;
 Int $w;
 
+$yred -> 1024;
+Print["hello",10];
+Print["world",10.324];
+Print["value is",$yred];
+$yred -> 1337;
+Print["value is",$yred];
 
-Mercedes.TiALuatMaTa[TiALuatMaTa[10, 20], 20];
+
+Mercedes.PutereMotor[PutereMotor[$data, $z], 20];

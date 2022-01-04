@@ -74,6 +74,7 @@ $[_a-zA-Z][_a-zA-Z0-9]* {yylval.value=strdup(yytext);return IDENTIFICATOR;}
 
 [ \t] ;
 \n {++yylineno;}
+\/\/ {++yylineno;}
 . {return yytext[0];}
 
 %%

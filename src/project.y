@@ -90,6 +90,8 @@ bloc: asginare_variabila PUNCTSIVIRGULA
      | apel_functie_din_clasa PUNCTSIVIRGULA
      | apel_functie PUNCTSIVIRGULA
      | declaratie PUNCTSIVIRGULA
+     | print_function PUNCTSIVIRGULA
+     ;
 
 apel_functie_din_clasa: NUME_ARBITRAR PUNCT apel_functie
 
@@ -141,6 +143,13 @@ declaratie_tip: INTEGER IDENTIFICATOR                  { DeclareValue($1, $2, ""
           | BOOL IDENTIFICATOR ASSIGN BOOL_FALSE       { DeclareValue($1, $2, $4, true); }
           | BOOL IDENTIFICATOR ASSIGN BOOL_TRUE        { DeclareValue($1, $2, $4, true); }
           ;
+
+print_function: PRINT PARANTEZAPATRATADESCHISA QUOTES_STRING VIRGULA NUMAR PARANTEZAPATRATAINCHISA { PrintValue($3, $5); }
+     | PRINT PARANTEZAPATRATADESCHISA QUOTES_STRING VIRGULA NUMAR_FLOAT PARANTEZAPATRATAINCHISA { PrintValue($3, $5); }
+     | PRINT PARANTEZAPATRATADESCHISA QUOTES_STRING VIRGULA BOOL_TRUE PARANTEZAPATRATAINCHISA { PrintValue($3, $5); }
+     | PRINT PARANTEZAPATRATADESCHISA QUOTES_STRING VIRGULA BOOL_FALSE PARANTEZAPATRATAINCHISA { PrintValue($3, $5); }
+     | PRINT PARANTEZAPATRATADESCHISA QUOTES_STRING VIRGULA IDENTIFICATOR PARANTEZAPATRATAINCHISA { PrintIdentifier($3, $5); }
+     ;
 %%
 void yyerror(char * s){
      printf("Compile error at line: %d\nError: %s\n",yylineno, s);
