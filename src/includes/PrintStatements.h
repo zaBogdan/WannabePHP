@@ -1,15 +1,6 @@
 #pragma once
 #include "constants.h"
 
-char* RemoveQuotesFromString(char* _s)
-{
-    size_t _len = strlen(_s);
-    char* _new_s = malloc(_len * sizeof(_s[0]));
-    strncpy(_new_s, _s+1, _len-2);
-    _new_s[_len-2] = 0;
-    return _new_s;
-}
-
 void PrintValue(char* str, char* x)
 {
     printf("%s %s\n",RemoveQuotesFromString(str), x);

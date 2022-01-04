@@ -97,23 +97,6 @@ char* GetTypeFromInt(int type)
      }
 }
 
-char* GetRootScope(char* currentScope)
-{
-     size_t len = strlen(currentScope);
-     char* data;
-     for(int i=0;i<len;++i)
-     {
-          if(currentScope[i] == '.')
-          {
-               data = malloc((i+2)*sizeof(char));
-               strncpy(data, currentScope, i+1);
-               data[i+2] = 0;
-               return data;
-          }
-     }
-     return NULL;
-}
-
 struct Identifier* GetVariabileFromContext(char* key)
 {
      //no matter of context we first check global variables
