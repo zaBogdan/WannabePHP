@@ -30,8 +30,7 @@ Object Mercedes
     Int Hello[Int $world4, Int $data5]
     {
         Int $jajaja -> 10;
-        $mere -> "ana are mere";
-        $world4 -> 10;
+        $data2 -> 10;
     }
 
     Int PutereMotor[Int $helloWorld, Int $world2]
@@ -51,6 +50,5 @@ Print["world",10.324];
 Print["value is",$yred];
 $yred -> 1337;
 Print["value is",$yred];
-
 
 Mercedes.PutereMotor[PutereMotor[$data, $z], 20];

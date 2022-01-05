@@ -1,24 +1,24 @@
-[global] Name: $x, Type: integer
-[global] Name: $y, Type: float
-[global] Name: $mert, Type: character
-[global] Name: $mere, Type: string
-[global] Name: $bestCompiler, Type: bool
-[global] Name: $data, Type: constant integer
-[global] Name: $flotant, Type: constant float
-[global] Name: $constString, Type: constant string
-[global] Name: $done, Type: constant bool
-[global] Name: $xx, Type: integer
-[Mercedes.] Name: $xxxx, Type: integer
-[Mercedes.] Name: $data2, Type: float
-[Mercedes.Hello] Name: $world4, Type: integer
-[Mercedes.Hello] Name: $data5, Type: integer
-[Mercedes.Hello] Name: $jajaja, Type: integer
-[Mercedes.PutereMotor] Name: $helloWorld, Type: integer
-[Mercedes.PutereMotor] Name: $world2, Type: integer
-[Mercedes.PutereMotor] Name: $xulescu, Type: integer
-[PutereMotor] Name: $hello, Type: integer
-[PutereMotor] Name: $world, Type: integer
-[PutereMotor] Name: $xxx, Type: integer
-[main] Name: $yred, Type: integer
-[main] Name: $z, Type: integer
-[main] Name: $w, Type: integer
+[global] Name: $x, Type: integer, Value: 10
+[global] Name: $y, Type: float, Value: 1.2400
+[global] Name: $mert, Type: character, Value: 'M'
+[global] Name: $mere, Type: string, Value: "Ana are mere"
+[global] Name: $bestCompiler, Type: bool, Value: False
+[global] Name: $data, Type: constant integer, Value: 1204
+[global] Name: $flotant, Type: constant float, Value: 1204.3521
+[global] Name: $constString, Type: constant string, Value: "Hello world guys"
+[global] Name: $done, Type: constant bool, Value: False
+[global] Name: $xx, Type: integer, Value: 0 (uninitialized)
+[Mercedes.] Name: $xxxx, Type: integer, Value: 0 (uninitialized)
+[Mercedes.] Name: $data2, Type: float, Value: 10.0000
+[Mercedes.Hello] Name: $world4, Type: integer, Value: 0 (uninitialized)
+[Mercedes.Hello] Name: $data5, Type: integer, Value: 0 (uninitialized)
+[Mercedes.Hello] Name: $jajaja, Type: integer, Value: 10
+[Mercedes.PutereMotor] Name: $helloWorld, Type: integer, Value: 0 (uninitialized)
+[Mercedes.PutereMotor] Name: $world2, Type: integer, Value: 0 (uninitialized)
+[Mercedes.PutereMotor] Name: $xulescu, Type: integer, Value: 10
+[PutereMotor] Name: $hello, Type: integer, Value: 0 (uninitialized)
+[PutereMotor] Name: $world, Type: integer, Value: 0 (uninitialized)
+[PutereMotor] Name: $xxx, Type: integer, Value: 10
+[main] Name: $yred, Type: integer, Value: 1337 (uninitialized)
+[main] Name: $z, Type: integer, Value: 0 (uninitialized)
+[main] Name: $w, Type: integer, Value: 0 (uninitialized)

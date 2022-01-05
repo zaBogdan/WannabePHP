@@ -196,7 +196,7 @@ void AssignVariable(char* key, char* value)
                     sprintf(error, "Invalid type assigned to variable '%s' (required type: char)", key);
                     yyerror(error);
                }
-               currentVariable->value.character = value[0];
+               currentVariable->value.character = value[1];
                break;
           case TYPE_STRING:
                if(value[0] != '"')
@@ -254,6 +254,14 @@ void DeclareValue(char* dataType, char* key, char* value, bool _isIntialized)
      newId.isPrivate = privateVariabile;
      newId.isInitialized = _isIntialized;
 
+     if(!_isIntialized)
+     {
+          newId.value.binar = false;
+          newId.value.decimal = 0.0f;
+          newId.value.character = 0;
+          newId.value.number = 0;
+     }
+
      //checking for things like Readonly Int $x;
      if(newId.isConstant == true && !newId.isInitialized)
      {
@@ -269,7 +277,7 @@ void DeclareValue(char* dataType, char* key, char* value, bool _isIntialized)
           newId.type = TYPE_FLOAT;
           CHECK_BREAK(!strcmp(dataType, "Float"), newId.isInitialized, newId.value.decimal = atof(value));
           newId.type = TYPE_CHAR;
-          CHECK_BREAK(!strcmp(dataType, "Char"), newId.isInitialized, newId.value.character = value[0]);
+          CHECK_BREAK(!strcmp(dataType, "Char"), newId.isInitialized, newId.value.character = value[1]);
           newId.type = TYPE_BOOL;
           CHECK_BREAK(!strcmp(dataType, "Boolean"), newId.isInitialized, newId.value.binar = (strcmp(value, "True") == 0));
           newId.type = TYPE_STRING;
@@ -277,7 +285,7 @@ void DeclareValue(char* dataType, char* key, char* value, bool _isIntialized)
           if(!strcmp(dataType, "String"))
           {
                newId.value.string = malloc(valueLength*sizeof(char));
-               strcpy(newId.value.string, value);
+               strcpy(newId.value.string, RemoveQuotesFromString(value));
                break;
           }
 
@@ -322,7 +330,32 @@ void StandardFormat(struct Identifier current, char* msg)
      }
      char* strType = GetTypeFromInt(current.type);
      strncat(type, strType, strlen(strType));
-     sprintf(msg, "[%s] Name: %s, Type: %s\n",current.scopeName,current.name, type);
+     sprintf(msg, "[%s] Name: %s, Type: %s, Value:",current.scopeName,current.name, type);
+     switch(current.type)
+     {
+          case TYPE_INTEGER:
+               sprintf(msg, "%s %d",msg, current.value.number);
+               break;
+          case TYPE_FLOAT:
+               sprintf(msg, "%s %.4f",msg, current.value.decimal);
+               break;
+          case TYPE_CHAR:
+               sprintf(msg, "%s '%c'",msg, current.value.character);
+               break;
+          case TYPE_STRING:
+               sprintf(msg, "%s \"%s\"",msg, current.value.string);
+               break;
+          case TYPE_BOOL:
+               sprintf(msg, "%s %s",msg, (current.value.decimal == true ? "True" : "False"));
+               break;
+          default:
+               return;
+     }
+     if(!current.isInitialized)
+     {
+          sprintf(msg, "%s (uninitialized)", msg);
+     }
+     sprintf(msg, "%s\n",msg);
 }
 
 void DumpVariablesToFile(FILE* file)
