@@ -8,7 +8,7 @@ Boolean $bestCompiler -> True;
 
 Readonly Int $data -> 1204;
 Readonly Float $flotant -> 1204.352;
-Readonly String $hatzJohn -> "haaatzzz johnutzule";
+Readonly String $constString -> "Hello world guys";
 Readonly Boolean $done -> False;
 
 Int $xx;

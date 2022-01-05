@@ -5,7 +5,7 @@
 [global] Name: $bestCompiler, Type: bool
 [global] Name: $data, Type: constant integer
 [global] Name: $flotant, Type: constant float
-[global] Name: $hatzJohn, Type: constant string
+[global] Name: $constString, Type: constant string
 [global] Name: $done, Type: constant bool
 [global] Name: $xx, Type: integer
 [Mercedes.] Name: $xxxx, Type: integer

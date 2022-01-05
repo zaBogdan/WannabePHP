@@ -165,7 +165,7 @@ void AssignVariable(char* key, char* value)
           yyerror(error);
      }
      //here i will 100% need to split it into 3 contexts again->... 
-     printf("[ AssignVariable ] Current variable is: %s with type: %d \n", currentVariable->name, currentVariable->type);
+     // printf("[ AssignVariable ] Current variable is: %s with type: %d \n", currentVariable->name, currentVariable->type);
      long int tempValue;
      float tempFloatVal;
      size_t size = strlen(value);
