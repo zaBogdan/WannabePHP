@@ -26,4 +26,5 @@ struct Identifier{
 struct ClassInfo{
      char* identifierName;
      char* className;
+     char* scopeName;
 };

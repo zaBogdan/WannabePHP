@@ -55,6 +55,10 @@ void InitializeClass(char* className, char* identifier)
      newClass.identifierName = malloc(_len * sizeof(char));
      strcpy(newClass.identifierName, identifier);
 
+     _len = strlen(currentScope);
+     newClass.scopeName = malloc(_len * sizeof(char));
+     strcpy(newClass.scopeName, currentScope);
+
      //setting the classs
      SetVariabileInClassContext(newClass);    
 }

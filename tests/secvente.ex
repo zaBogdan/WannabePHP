@@ -47,6 +47,7 @@ Int $w;
 Mercedes $a;
 $a.$xxxx -> 24;
 $yred -> 1024;
+
 Print["hello",10];
 Print["world",10.324];
 Print["value is",$yred];

@@ -22,3 +22,4 @@
 [main] Name: $yred, Type: integer, Value: 1337
 [main] Name: $z, Type: integer, Value: 0 (uninitialized)
 [main] Name: $w, Type: integer, Value: 0 (uninitialized)
+[main][Custom Type] Name: $a, Type: Mercedes
