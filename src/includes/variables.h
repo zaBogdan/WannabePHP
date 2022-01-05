@@ -22,6 +22,7 @@ void constat_leave()
  * @return true if the key exists
  * @return false otherwise
  */
+
 bool CheckIdentifier(char* key, bool throwError)
 {
      for(int idx = 0; idx < allKeysIDX; idx++)
@@ -35,23 +36,6 @@ bool CheckIdentifier(char* key, bool throwError)
 }
 
 
-/**
- * @brief Adds an identifier to the global list
- * 
- * @param key the name of the identifier
- */
-void AddIdentifier(char* key)
-{
-     if(allKeysIDX > 1000)
-     {
-          yyerror("You can have up to 1000 unique identifiers in your code.");
-     }
-
-     // here we will improve on it.
-     strcpy(allKeys[allKeysIDX], key);
-     ++allKeysIDX;
-
-}
 
 void SetVariableInGlobalContext(struct Identifier id)
 {
@@ -225,6 +209,7 @@ void AssignVariable(char* key, char* value)
                sprintf(error, "You are trying to assign to an invalid type.");
                yyerror(error);
      }
+     currentVariable->isInitialized = true;
 }
 
 void DeclareValue(char* dataType, char* key, char* value, bool _isIntialized)
@@ -315,6 +300,8 @@ void DeclareValue(char* dataType, char* key, char* value, bool _isIntialized)
                yyerror(error);
      }
 }
+
+
 
 
 void StandardFormat(struct Identifier current, char* msg)

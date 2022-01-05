@@ -26,3 +26,21 @@ char* GetRootScope(char* currentScope)
      }
      return NULL;
 }
+
+/**
+ * @brief Adds an identifier to the global list
+ * 
+ * @param key the name of the identifier
+ */
+void AddIdentifier(char* key)
+{
+     if(allKeysIDX > 1000)
+     {
+          yyerror("You can have up to 1000 unique identifiers in your code.");
+     }
+
+     // here we will improve on it.
+     strcpy(allKeys[allKeysIDX], key);
+     ++allKeysIDX;
+
+}

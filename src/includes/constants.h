@@ -9,14 +9,16 @@
 #include "structures.h"
 #include <stdlib.h>
 
-char currentScope[100];
+char currentScope[100], oldScope[100];
 
 //here we will keep all identifiers
 char allKeys[1000][100];
 struct Identifier globalScope[250], functionScope[250], objectScope[250];
+struct ClassInfo classDetails[250];
+char* allClasses[250];
 
 //and there we will keep track of each identifier
-int allKeysIDX = 0, globalScopeIDX = 0, functionScopeIDX = 0, objectScopeIDX = 0;
+int allKeysIDX = 0, globalScopeIDX = 0, functionScopeIDX = 0, objectScopeIDX = 0, classDetailsIDX = 0, allClassesIDX = 0;
 
 //this are for variable
 bool constVariabile = false; 

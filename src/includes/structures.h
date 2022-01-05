@@ -22,3 +22,8 @@ struct Identifier{
      bool isConstant;
      bool isInitialized;
 };
+
+struct ClassInfo{
+     char* identifierName;
+     char* className;
+};

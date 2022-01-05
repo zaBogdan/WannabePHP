@@ -6,24 +6,34 @@
  */
 void switchContext(char* name)
 {
+     strcpy(oldScope, currentScope);
      strcpy(currentScope, name);
+}
+
+void revertContext()
+{
+     char copy[200];
+     strcpy(copy, oldScope);
+     switchContext(copy);
 }
 
 //for classes
 void class_enter(char* className)
 {
      strncat(className, ".",1);
+     strcpy(oldScope, currentScope);
      strcpy(currentScope, className);
 }
 
 void class_leave()
 {
-     strcpy(currentScope, "global");
+     strcpy(currentScope, oldScope);
 }
 
 //for functions
 void function_enter(char* functionName)
 {
+     strcpy(oldScope, currentScope);
      int len = strlen(currentScope);
      if(currentScope[len-1] == '.')
      {
@@ -48,12 +58,12 @@ void function_leave()
                return;
           }
      }
-     strcpy(currentScope, "global");
+     strcpy(currentScope, oldScope);
 }
 
 /**
  * @brief Get the Current Context object
- * 
+ *
  * @return 0 - if we are in a global context
  * @return 1 - if we are in a class context
  * @return 2 - if we are in a function context

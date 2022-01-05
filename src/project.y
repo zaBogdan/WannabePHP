@@ -62,7 +62,7 @@ main : {switchContext("main");} MAIN_SECTION bloc_cod
 
 
 //Object data {cod}
-clasa: CLASA NUME_ARBITRAR {class_enter($2);} ACOLADADESCHISA declaratie_clasa ACOLADAINCHISA PUNCTSIVIRGULA {class_leave();} 
+clasa: CLASA NUME_ARBITRAR {DeclareClass($2); class_enter($2);} ACOLADADESCHISA declaratie_clasa ACOLADAINCHISA PUNCTSIVIRGULA {class_leave();} 
      ;
 
 //descriem declaratia unei clase:
@@ -91,17 +91,29 @@ bloc: asginare_variabila PUNCTSIVIRGULA
      | apel_functie PUNCTSIVIRGULA
      | declaratie PUNCTSIVIRGULA
      | print_function PUNCTSIVIRGULA
+     | intializare_clasa PUNCTSIVIRGULA
+     | asignare_variabila_din_clasa PUNCTSIVIRGULA
      ;
+
+intializare_clasa: NUME_ARBITRAR IDENTIFICATOR { InitializeClass($1, $2); }
+               ;
+
+asignare_variabila_din_clasa: IDENTIFICATOR {switchContext(GetClassNameFromIdentifier($1));} PUNCT asginare_variabila {revertContext();}
+     ;
+
 
 apel_functie_din_clasa: NUME_ARBITRAR PUNCT apel_functie
 
+
 apel_functie: NUME_ARBITRAR PARANTEZAPATRATADESCHISA list_arg_apel_functie PARANTEZAPATRATAINCHISA
 
-list_arg_apel_functie: argumente_functie
-          | list_arg_apel_functie VIRGULA argumente_functie
+
+list_arg_apel_functie: tipuri_de_argumente
+          | list_arg_apel_functie VIRGULA tipuri_de_argumente
           ;
 
-argumente_functie: apel_functie
+
+tipuri_de_argumente: apel_functie
                | IDENTIFICATOR
                | NUMAR
                | NUMAR_FLOAT
