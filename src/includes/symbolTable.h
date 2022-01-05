@@ -18,19 +18,19 @@ void StandardFormat(struct Identifier current, char* msg)
      switch(current.type)
      {
           case TYPE_INTEGER:
-               sprintf(msg, "%s %d",msg, current.value.number);
+               sprintf(msg, "%s %d",msg, current.value[0].number);
                break;
           case TYPE_FLOAT:
-               sprintf(msg, "%s %.4f",msg, current.value.decimal);
+               sprintf(msg, "%s %.4f",msg, current.value[0].decimal);
                break;
           case TYPE_CHAR:
-               sprintf(msg, "%s '%c'",msg, current.value.character);
+               sprintf(msg, "%s '%c'",msg, current.value[0].character);
                break;
           case TYPE_STRING:
-               sprintf(msg, "%s \"%s\"",msg, current.value.string);
+               sprintf(msg, "%s \"%s\"",msg, current.value[0].string);
                break;
           case TYPE_BOOL:
-               sprintf(msg, "%s %s",msg, (current.value.decimal == true ? "True" : "False"));
+               sprintf(msg, "%s %s",msg, (current.value[0].decimal == true ? "True" : "False"));
                break;
           default:
                return;

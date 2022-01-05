@@ -11,8 +11,6 @@ Readonly Float $flotant -> 1204.352;
 Readonly String $constString -> "Hello world guys";
 Readonly Boolean $done -> False;
 
-Int $xx;
-
 __custom_types__
 
 

@@ -15,7 +15,7 @@ struct Identifier{
      unsigned int type;
      
      //value that it holds
-     struct suportedTypes value;
+     struct suportedTypes* value;
      
      //characteristics
      bool isPrivate;

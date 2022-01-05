@@ -7,7 +7,6 @@
 [global] Name: $flotant, Type: constant float, Value: 1204.3521
 [global] Name: $constString, Type: constant string, Value: "Hello world guys"
 [global] Name: $done, Type: constant bool, Value: False
-[global] Name: $xx, Type: integer, Value: 0 (uninitialized)
 [Mercedes.] Name: $xxxx, Type: integer, Value: 24
 [Mercedes.] Name: $data2, Type: float, Value: 10.0000
 [Mercedes.Hello] Name: $world4, Type: integer, Value: 0 (uninitialized)

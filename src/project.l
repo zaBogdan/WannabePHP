@@ -81,5 +81,6 @@ $[_a-zA-Z][_a-zA-Z0-9]* {yylval.value=strdup(yytext);return IDENTIFICATOR;}
 
 // // Mercedes a;
 // a.$xxxx -> 10;
+//done. 
 // x -> (x+5) + 6.2 + f(2) + v[2]
 // x > 1 && x < 10 

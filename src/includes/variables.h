@@ -163,7 +163,7 @@ void AssignVariable(char* key, char* value)
                     sprintf(error, "Invalid type assigned to variable '%s' (required type: integer)", key);
                     yyerror(error);
                }
-               currentVariable->value.number = tempValue;
+               currentVariable->value[0].number = tempValue;
                break;
           case TYPE_FLOAT:
                tempFloatVal = strtof(value, NULL);
@@ -172,7 +172,7 @@ void AssignVariable(char* key, char* value)
                     sprintf(error, "Invalid type assigned to variable '%s' (required type: float)", key);
                     yyerror(error);
                }
-               currentVariable->value.decimal = tempFloatVal;
+               currentVariable->value[0].decimal = tempFloatVal;
                break;
           case TYPE_CHAR:
                if(value[1] != 0)
@@ -180,7 +180,7 @@ void AssignVariable(char* key, char* value)
                     sprintf(error, "Invalid type assigned to variable '%s' (required type: char)", key);
                     yyerror(error);
                }
-               currentVariable->value.character = value[1];
+               currentVariable->value[0].character = value[1];
                break;
           case TYPE_STRING:
                if(value[0] != '"')
@@ -188,19 +188,19 @@ void AssignVariable(char* key, char* value)
                     sprintf(error, "Invalid type assigned to variable '%s' (required type: string)", key);
                     yyerror(error);
                }
-               currentVariable->value.string = malloc(size*sizeof(char));
-               strncpy(currentVariable->value.string, value+1, size-2);
+               currentVariable->value[0].string = malloc(size*sizeof(char));
+               strncpy(currentVariable->value[0].string, value+1, size-2);
                break;
 
           case TYPE_BOOL:
                if(!strcmp(value, "True"))
                {
-                    currentVariable->value.binar = true;
+                    currentVariable->value[0].binar = true;
                     break;
                }
                if(!strcmp(value, "False"))
                {
-                    currentVariable->value.binar = false;
+                    currentVariable->value[0].binar = false;
                     break;
                }
                sprintf(error, "Invalid type assigned to variable '%s' (required type: boolean)", key);
@@ -239,12 +239,15 @@ void DeclareValue(char* dataType, char* key, char* value, bool _isIntialized)
      newId.isPrivate = privateVariabile;
      newId.isInitialized = _isIntialized;
 
+     //here we will declare a vector of one value.
+     newId.value = malloc(1 * sizeof(struct suportedTypes));
+
      if(!_isIntialized)
      {
-          newId.value.binar = false;
-          newId.value.decimal = 0.0f;
-          newId.value.character = 0;
-          newId.value.number = 0;
+          newId.value[0].binar = false;
+          newId.value[0].decimal = 0.0f;
+          newId.value[0].character = 0;
+          newId.value[0].number = 0;
      }
 
      //checking for things like Readonly Int $x;
@@ -258,19 +261,19 @@ void DeclareValue(char* dataType, char* key, char* value, bool _isIntialized)
      //deciding the data type.
      do{
           newId.type = TYPE_INTEGER;
-          CHECK_BREAK(!strcmp(dataType, "Int"), newId.isInitialized, newId.value.number = atoi(value));
+          CHECK_BREAK(!strcmp(dataType, "Int"), newId.isInitialized, newId.value[0].number = atoi(value));
           newId.type = TYPE_FLOAT;
-          CHECK_BREAK(!strcmp(dataType, "Float"), newId.isInitialized, newId.value.decimal = atof(value));
+          CHECK_BREAK(!strcmp(dataType, "Float"), newId.isInitialized, newId.value[0].decimal = atof(value));
           newId.type = TYPE_CHAR;
-          CHECK_BREAK(!strcmp(dataType, "Char"), newId.isInitialized, newId.value.character = value[1]);
+          CHECK_BREAK(!strcmp(dataType, "Char"), newId.isInitialized, newId.value[0].character = value[1]);
           newId.type = TYPE_BOOL;
-          CHECK_BREAK(!strcmp(dataType, "Boolean"), newId.isInitialized, newId.value.binar = (strcmp(value, "True") == 0));
+          CHECK_BREAK(!strcmp(dataType, "Boolean"), newId.isInitialized, newId.value[0].binar = (strcmp(value, "True") == 0));
           newId.type = TYPE_STRING;
           
           if(!strcmp(dataType, "String"))
           {
-               newId.value.string = malloc(valueLength*sizeof(char));
-               strcpy(newId.value.string, RemoveQuotesFromString(value));
+               newId.value[0].string = malloc(valueLength*sizeof(char));
+               strcpy(newId.value[0].string, RemoveQuotesFromString(value));
                break;
           }
 
