@@ -1,1 +1,7 @@
-[global] Name: $zabogdan, Type: integer, Value: 0 (uninitialized)
+[global] Identifier: $bool, Type: Boolean, Value: True
+[global] Identifier: $deci, Type: Int, Value: 10
+[global] Identifier: $wavy, Type: Float, Value: (uninitialized)
+[global] Identifier: $stringy, Type: String, Value: "Hello world bitch"
+[global] Identifier: $charrr, Type: Char, Value: 'c'
+[main] Identifier: $x, Type: constant Int, Value: 102
+[main] Identifier: $zabogdan5, Type: String, Value: "zaBogdan is literally the best"

@@ -62,13 +62,19 @@ Value GetValueFromChar(char* key, char* value, int type)
 
 int GetTypeFromString(char* strType)
 {
-    char types[10][10] = {
-        "Int", "Float", "Char", "String", "Boolean", "Void"
-    };
     for(int idx = 0;idx < 6;++idx)
     {
         if(!strcmp(strType, types[idx]))
             return idx+1;
     }
     return -1;
+}
+
+char* RemoveQuotesFromString(char* _s)
+{
+    size_t _len = strlen(_s);
+    char* _new_s = malloc(_len * sizeof(_s[0]));
+    strncpy(_new_s, _s+1, _len-2);
+    _new_s[_len-2] = 0;
+    return _new_s;
 }

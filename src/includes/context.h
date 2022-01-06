@@ -7,7 +7,9 @@ void SwitchContext(char* name)
     strcpy(copyContext, currentContext);
     strcpy(oldContext, copyContext);
     strcpy(currentContext, name);
+    #ifdef __DEBUG__
     printf("[ CONTEXT ] We are currently in %s. The old context was: %s\n",currentContext, oldContext);
+    #endif
 }
 
 void ExitContext()
@@ -16,7 +18,10 @@ void ExitContext()
     strcpy(copyContext, currentContext);
     strcpy(currentContext, oldContext);
     strcpy(oldContext, copyContext);
+    #ifdef __DEBUG__
     printf("[ CONTEXT ] We are currently in %s. The old context was: %s\n",currentContext, oldContext);
+    #endif
+
 }
 
 void ClassContext(char* name)

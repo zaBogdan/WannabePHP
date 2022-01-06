@@ -83,13 +83,14 @@ void DeclareVariable(char* type, char* key, char* value, bool _init)
         newVariable.value[0] = GetValueFromChar(key, value, newVariable.type);
     }
 
-
+    #ifdef __DEBUG__
     printf("[VARIABLE] TYPE: %d, ID: %s, CONTEXT: %s, INTIALIZED: %d \n",
         newVariable.type,
         newVariable.name, 
         newVariable.context,
         newVariable.initialized
         );
+    #endif
     PushObjectToContext(newVariable);
 
 
@@ -99,19 +100,79 @@ void AssignValue(char* key, char* value)
 {
     char error[200];
     int variableLocation = IsIdentifierDeclared(key);
+    
     if(variableLocation == -1)
     {
         sprintf(error, "You can't assign a value to an undeclared object `%s`. Declare it first.", key);
         yyerror(error);
     }
+
+    //TODO: Check if the variable is visible in your scope.
+
+    if(storedData[variableLocation].constant)
+    {
+        sprintf(error, "You can't reassign a value to a constant object `%s'.", key);
+        yyerror(error);
+    }
+    
+    //if not initialized we should allocate some memory
+    if(!storedData[variableLocation].initialized)
+    {
+        storedData[variableLocation].charValue = malloc(1 * sizeof(char*));
+        storedData[variableLocation].value = malloc(1 * sizeof(Value*));
+    }
+
+    size_t _strLen;
+    _strLen = strlen(value);
+    storedData[variableLocation].charValue[0] = malloc(_strLen * sizeof(char));
+    strcpy(storedData[variableLocation].charValue[0], value);
+
+    storedData[variableLocation].value[0] = GetValueFromChar(key, value,storedData[variableLocation].type);
+    storedData[variableLocation].initialized = true;
+
+    #ifdef __DEBUG__
+    printf("[AssignValue] TYPE: %d, ID: %s, CONTEXT: %s, VARIABLE: %s \n",
+        storedData[variableLocation].type,
+        storedData[variableLocation].name, 
+        storedData[variableLocation].context,
+        storedData[variableLocation].charValue[0]
+        );
+    #endif
 }
 
 /**
  * @brief Data structures: Arrays.
 */
+//some helpers for arrays
+void InitializeArray()
+{
+    for(int idx = 0; idx < vectorListIDX; ++idx)
+    {
+        free(vectorList[idx]);
+    }
+    vectorListIDX = 0;
+}
+
+void PushElementInArray(char* value)
+{
+    size_t _strLen = strlen(value);
+    vectorList[vectorListIDX] = malloc(_strLen * sizeof(char));
+    strcpy(vectorList[vectorListIDX], value);
+    vectorList[vectorListIDX][_strLen]=0;
+    ++vectorListIDX;
+}
+
+
+//actual functions
 void DeclareArray(char* type, char* key, bool _init)
 {
+    // #ifdef __DEBUG__
     printf("[ARRAY] Type: %s, Name: %s, Context: %s\n", type, key, currentContext);
+    for(int i=0;i< vectorListIDX; ++i)
+    {
+        printf("[ARRAY] %s[%d] = %s\n", key, i, vectorList[i]);
+    }
+    // #endif
 }
 
 

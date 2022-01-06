@@ -70,8 +70,8 @@ available_values: NUMAR { $$ = $1; }
         ;
 
 //to be decided what to return and how to manage it...
-value_list: available_values
-        | value_list VIRGULA available_values
+value_list: {InitializeArray();} available_values { PushElementInArray($2); }
+        | value_list VIRGULA available_values { PushElementInArray($3); }
         ;
 
 assign_value: IDENTIFIER ASSIGN available_values { AssignValue($1, $3); } //assign normal value
@@ -107,7 +107,7 @@ void yyerror(char * s){
 int main(int argc, char** argv){
      yyin=fopen(argv[1],"r");
      yyparse();
-    //  FILE* variableTable = fopen("symbol_table.txt", "w");
-    //  DumpVariablesToFile(variableTable);
+     FILE* variableTable = fopen("symbol_table.txt", "w");
+     DumpObjectsToFile(variableTable);
     return 0;
 } 

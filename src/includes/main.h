@@ -7,3 +7,4 @@
 #include "utils.h"
 #include "context.h"
 #include "data_structures.h"
+#include "symbol_tabels.h"
