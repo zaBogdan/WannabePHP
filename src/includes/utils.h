@@ -1,6 +1,11 @@
 #pragma once
 #include "definitions.h"
 
+
+int max(const int _a, const int _b)
+{
+    return _a > _b ? _a : _b;
+}
 Value GetValueFromChar(char* key, char* value, int type)
 {
     char error[200];

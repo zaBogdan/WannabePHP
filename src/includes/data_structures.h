@@ -96,7 +96,7 @@ void DeclareVariable(char* type, char* key, char* value, bool _init)
 
 }
 
-void AssignValue(char* key, char* value)
+void AssignValue(char* key, char* value, int pos)
 {
     char error[200];
     int variableLocation = IsIdentifierDeclared(key);
@@ -118,16 +118,27 @@ void AssignValue(char* key, char* value)
     //if not initialized we should allocate some memory
     if(!storedData[variableLocation].initialized)
     {
-        storedData[variableLocation].charValue = malloc(1 * sizeof(char*));
-        storedData[variableLocation].value = malloc(1 * sizeof(Value*));
+        if(storedData[variableLocation].isArray)
+        {
+            storedData[variableLocation].charValue = malloc(storedData[variableLocation].maxCapacity * sizeof(char*));
+            storedData[variableLocation].value = malloc(storedData[variableLocation].maxCapacity * sizeof(Value*));
+        }else{
+            storedData[variableLocation].charValue = malloc(1 * sizeof(char*));
+            storedData[variableLocation].value = malloc(1 * sizeof(Value*));
+        }
+    }
+
+    if(storedData[variableLocation].isArray)
+    {
+        storedData[variableLocation].maxPosition = max(storedData[variableLocation].maxPosition, pos+1);
     }
 
     size_t _strLen;
     _strLen = strlen(value);
-    storedData[variableLocation].charValue[0] = malloc(_strLen * sizeof(char));
-    strcpy(storedData[variableLocation].charValue[0], value);
+    storedData[variableLocation].charValue[pos] = malloc(_strLen * sizeof(char));
+    strcpy(storedData[variableLocation].charValue[pos], value);
 
-    storedData[variableLocation].value[0] = GetValueFromChar(key, value,storedData[variableLocation].type);
+    storedData[variableLocation].value[pos] = GetValueFromChar(key, value,storedData[variableLocation].type);
     storedData[variableLocation].initialized = true;
 
     #ifdef __DEBUG__
@@ -168,8 +179,6 @@ void DeclareArray(char* type, char* key, bool _init)
 {
     char error[200];
 
-    printf("[ARRAY] Type: %s, Name: %s, Context: %s\n", type, key, currentContext);
-    
     if(IsIdentifierDeclared(key) != -1)
     {
         sprintf(error, "You can't redeclare `%s`. Try to be more creative.", key);
@@ -214,8 +223,8 @@ void DeclareArray(char* type, char* key, bool _init)
     
     if(newVariable.initialized)
     {
-        newVariable.charValue = malloc(vectorListIDX * sizeof(char*));
-        newVariable.value = malloc(vectorListIDX * sizeof(Value));
+        newVariable.charValue = malloc(newVariable.maxCapacity * sizeof(char*));
+        newVariable.value = malloc(newVariable.maxCapacity * sizeof(Value));
 
         for(int idx = 0; idx < vectorListIDX; ++idx)
         {
@@ -241,3 +250,68 @@ void DeclareArray(char* type, char* key, bool _init)
 /**
  * @brief Data structures: Custom objects.
 */
+
+bool isTypeDeclared(char* type)
+{
+    for(int idx = 0;idx < customTypesIDX; ++idx)
+    {
+        if(!strcmp(customTypes[idx], type))
+            return true;
+    }
+    return false;
+}
+
+void DeclareType(char* type)
+{
+    strcpy(customTypes[customTypesIDX], type);
+    ++customTypesIDX;
+}
+
+void DeclareClass(char* type, char* id)
+{
+    char error[200];
+    if(!isTypeDeclared(type))
+    {
+        sprintf(error, "You can't declare `%s` object with an unknown type `%s`. Try to declare the object first.", id, type);
+        yyerror(error);
+    }
+
+    if(IsIdentifierDeclared(id) != -1)
+    {
+        sprintf(error, "You can't redeclare `%s`. Try to be more creative.", id);
+        yyerror(error);
+    }
+ 
+    CustomObj cls;
+    size_t _strLen = strlen(type);
+
+    cls.typeName = malloc(_strLen * sizeof(char));
+    strcpy(cls.typeName, type);
+
+    _strLen = strlen(id);
+    cls.id = malloc(_strLen * sizeof(char));
+    strcpy(cls.id, id);
+
+    PushIdentifier(id);
+}
+
+//operations with variables
+char* GetValueFromIdentifier(char* key, int pos)
+{
+    char error[200];
+    int variableLocation = IsIdentifierDeclared(key);
+    
+    if(variableLocation == -1)
+    {
+        sprintf(error, "You can't assign a value to an undeclared object `%s`. Declare it first.", key);
+        yyerror(error);
+    }
+
+    //TODO: Check the scope
+    if(storedData[variableLocation].isArray && pos > storedData[variableLocation].maxPosition)
+    {
+        sprintf(error, "You are trying to access an illegal value. Max declared position is: %d.", storedData[variableLocation].maxPosition);
+        yyerror(error);
+    }
+    return storedData[variableLocation].charValue[pos];
+}

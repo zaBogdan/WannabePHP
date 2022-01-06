@@ -23,3 +23,8 @@ typedef struct Object{
     int maxPosition;
     int maxCapacity;
 } Object;
+
+typedef struct CustomObject{
+    char* typeName;
+    char* id;
+} CustomObj;

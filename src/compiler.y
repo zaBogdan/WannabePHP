@@ -63,7 +63,8 @@ available_values: NUMAR { $$ = $1; }
         | BOOL_FALSE { $$ = $1; }
         | QUOTES_STRING { $$ = $1; }
         | CARACTER { $$ = $1; }
-        | IDENTIFIER { $$ = $1; } //GetValueStringFromID($1)
+        | IDENTIFIER { $$ = GetValueFromIdentifier($1,0); } 
+        | IDENTIFIER PARANTEZAPATRATADESCHISA NUMAR PARANTEZAPATRATAINCHISA { $$ = GetValueFromIdentifier($1,atoi($3)); } 
         //function_call
         //arithemic expressions
         //boolean expressions
@@ -74,13 +75,12 @@ value_list: {InitializeArray();} available_values { PushElementInArray($2); }
         | value_list VIRGULA available_values { PushElementInArray($3); }
         ;
 
-assign_value: IDENTIFIER ASSIGN available_values { AssignValue($1, $3); } //assign normal value
-        | IDENTIFIER PARANTEZAPATRATADESCHISA NUMAR PARANTEZAPATRATAINCHISA ASSIGN available_values //assign to array on pos
-        | IDENTIFIER ASSIGN PARANTEZAROTUNDADESCHISA value_list PARANTEZAROTUNDAINCHISA //assign an array
+assign_value: IDENTIFIER ASSIGN available_values { AssignValue($1, $3, 0); } //assign normal value
+        | IDENTIFIER PARANTEZAPATRATADESCHISA NUMAR PARANTEZAPATRATAINCHISA ASSIGN available_values { AssignValue($1, $6, atoi($3)); }//assign to array on pos
         | IDENTIFIER PUNCT IDENTIFIER ASSIGN available_values //assign to class
         ;
 
-initialize_class: NUME_ARBITRAR IDENTIFIER //init class
+initialize_class: NUME_ARBITRAR IDENTIFIER { DeclareClass($1,$2); }//init class
 
 declarations: declaration
         | CONSTANT {EnterConstant(); } declaration {LeaveConstant();}
