@@ -6,6 +6,7 @@
 [global] Identifier: $array, Type: Array Int, Values: (5123, 12, 20, 25, 30, 124, 10.24, 8, 9, 10, 11, 12, 1337)
 [global] Identifier: $zab124, Type: Float, Value: (uninitialized)
 [global] Identifier: $doa423, Type: Int, Value: (uninitialized)
+[global] Identifier: $chx, Type: Char, Value: (uninitialized)
 [global] Identifier: $zab2042, Type: Int, Value: 200
 [global] Identifier: $zab, Type: Int, Value: 200
 [global] Identifier: $doa, Type: Float, Value: (uninitialized)

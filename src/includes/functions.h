@@ -31,12 +31,14 @@ void DeclareFunction(char* type, char* name, int arguments)
 
     sprintf(signature, "%s %s(", type, name);
     
-    func.parameterIDX = malloc((identifiersIDX-arguments)*sizeof(int));
-
+    func.types = malloc((identifiersIDX-arguments)*sizeof(int));
+    func.parametersIDX = malloc(arguments*sizeof(int));
+    func.paramCount = arguments;
+    uint8_t counter = 0;
     for(int idx = identifiersIDX - arguments; idx < identifiersIDX; ++idx)
     {
-        printf("[%s] Variable name: %s, type: %s\n",name, storedData[idx].name, GetTypeFromInt(storedData[idx].type));
-        func.parameterIDX[idx] = storedData[idx].type;
+        func.types[idx] = storedData[idx].type;
+        func.parametersIDX[counter++] = idx;
         sprintf(signature,"%s%s",signature, GetTypeFromInt(storedData[idx].type));
         if(idx == identifiersIDX-1)
         {

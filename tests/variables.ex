@@ -10,7 +10,7 @@ Int $array[] -> ($deci, 12, 20, 25, 30, 124, 10.24, 8, 9, 10, 11, 12);
 
 __custom_types__
 
-Int PutereMotorOut(Float $zab124,Int $doa423)
+Int PutereMotorOut(Float $zab124,Int $doa423, Char $chx)
 {
     Int $zab2042 -> 200;
 }

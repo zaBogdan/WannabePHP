@@ -33,6 +33,10 @@ typedef struct funcs{
     char* name;
     char* context;
 
-    int* parameterIDX;
+    int* types;
+    int* parametersIDX;
+
+    int paramCount;
+
     char* functionSignature;
 } Function;
