@@ -1,0 +1,3 @@
+[global] Signature: Int PutereMotorOut(Float,Int)
+[global] Signature: Int PutereMotorOut(Int,Float)
+[global] Signature: Int PutereMotor(Int,Float)

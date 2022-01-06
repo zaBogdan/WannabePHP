@@ -28,3 +28,11 @@ typedef struct CustomObject{
     char* typeName;
     char* id;
 } CustomObj;
+
+typedef struct funcs{
+    char* name;
+    char* context;
+
+    int* parameterIDX;
+    char* functionSignature;
+} Function;

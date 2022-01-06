@@ -71,3 +71,8 @@ void DumpVariablesToFile(FILE* file)
           fprintf(file,"%s",msg);
      }
 }
+
+void DumpFunctions(FILE* file)
+{
+     for(int idx)
+}

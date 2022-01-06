@@ -46,3 +46,13 @@ void DumpObjectsToFile(FILE* file)
         fprintf(file,"%s",msg);
     }
 }
+
+void DumpFunctionsToFile(FILE* file)
+{
+    char msg[200];
+    for(int idx=0;idx<functionSignaturesIDX;++idx)
+    {
+        sprintf(msg, "[%s] Signature: %s\n", functionSignatures[idx].context, functionSignatures[idx].functionSignature);
+        fprintf(file,"%s",msg);
+    }
+}

@@ -11,6 +11,7 @@ extern int yylineno;
 %}
 
 %union{
+    int num;
     char* value;
 }
 
@@ -23,14 +24,46 @@ extern int yylineno;
 
 %type <value> available_types
 %type <value> available_values
+%type <value> custom_available_values
+
+%type <num> function_argument_list
 
 %%
 
 entry_point: code_structure { printf("Code syntax is correct.\n"); }
         ;
 
-code_structure: global_scope main_scope
+code_structure: global_scope custom_scope main_scope
+        | global_scope main_scope
+        | custom_scope main_scope
+        | main_scope
         ;
+
+custom_scope: CUSTOMTYPES_SECTION declare_object
+        | CUSTOMTYPES_SECTION declare_function
+        | custom_scope declare_object
+        | custom_scope declare_function
+        ;
+
+//the scope should be class name ($2)
+declare_object: CLASA NUME_ARBITRAR ACOLADADESCHISA object_block ACOLADAINCHISA PUNCTSIVIRGULA
+
+object_block: object_code 
+        | object_block object_code 
+        ;
+
+object_code: PUBLIC declarations PUNCTSIVIRGULA
+        | PRIVAT declarations PUNCTSIVIRGULA
+        | declare_function
+        ;
+
+//the scope should be either class_name.function_name or function_name (declared in global context) 
+declare_function: available_types NUME_ARBITRAR PARANTEZAROTUNDADESCHISA function_argument_list PARANTEZAROTUNDAINCHISA {DeclareFunction($1, $2, $4);} ACOLADADESCHISA code_block ACOLADAINCHISA
+        ;
+
+//use the identifiersIDX and count how many args do you have. Just subtract it and you have it all.
+function_argument_list: declare_only { $$ = 1; }
+        | function_argument_list VIRGULA declare_only { $$++; }
 
 //here we will have the main scope
 global_scope: DECLARATION_SECTION { SwitchContext("global"); } declarations PUNCTSIVIRGULA
@@ -47,6 +80,8 @@ code_block: code_sequence PUNCTSIVIRGULA
 code_sequence: declarations
         | assign_value
         | initialize_class
+        | print_function
+        | function_call
         ;
 
 available_types: INTEGER { $$ = $1; }
@@ -65,10 +100,19 @@ available_values: NUMAR { $$ = $1; }
         | CARACTER { $$ = $1; }
         | IDENTIFIER { $$ = GetValueFromIdentifier($1,0); } 
         | IDENTIFIER PARANTEZAPATRATADESCHISA NUMAR PARANTEZAPATRATAINCHISA { $$ = GetValueFromIdentifier($1,atoi($3)); } 
-        //function_call
+        | function_call { $$ = "0"; }
         //arithemic expressions
         //boolean expressions
         ;
+
+function_call: NUME_ARBITRAR PARANTEZAROTUNDADESCHISA function_call_args_list PARANTEZAROTUNDAINCHISA
+        ;
+
+
+function_call_args_list: available_values
+        | function_call_args_list VIRGULA available_values
+        ;
+
 
 //to be decided what to return and how to manage it...
 value_list: {InitializeArray();} available_values { PushElementInArray($2); }
@@ -97,6 +141,18 @@ declare_only: available_types IDENTIFIER { DeclareVariable($1, $2, "", false); }
 declare_and_assign: available_types IDENTIFIER ASSIGN available_values { DeclareVariable($1, $2, $4, true); } //declare, init
         | available_types IDENTIFIER PARANTEZAPATRATADESCHISA PARANTEZAPATRATAINCHISA ASSIGN PARANTEZAROTUNDADESCHISA value_list PARANTEZAROTUNDAINCHISA { DeclareArray($1, $2, true); } //arrays
         ;
+
+custom_available_values: NUMAR { $$ = $1; }
+        | NUMAR_FLOAT { $$ = $1; }
+        | IDENTIFIER { $$ = GetValueFromIdentifier($1,0); } 
+        | IDENTIFIER PARANTEZAPATRATADESCHISA NUMAR PARANTEZAPATRATAINCHISA { $$ = GetValueFromIdentifier($1,atoi($3)); }
+        // | arithmetic expressions
+        // | boolean expressions
+        ;
+
+
+print_function: PRINT PARANTEZAROTUNDADESCHISA QUOTES_STRING VIRGULA custom_available_values PARANTEZAROTUNDAINCHISA {PrintFunction($3, $5); }
+        ;
 %%
 
 void yyerror(char * s){
@@ -109,5 +165,9 @@ int main(int argc, char** argv){
      yyparse();
      FILE* variableTable = fopen("symbol_table.txt", "w");
      DumpObjectsToFile(variableTable);
-    return 0;
+
+     FILE* functionTable = fopen("symbol_table_functions.txt", "w");
+     DumpFunctionsToFile(functionTable);
+
+return 0;
 } 

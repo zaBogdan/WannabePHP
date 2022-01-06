@@ -237,12 +237,6 @@ void DeclareArray(char* type, char* key, bool _init)
         }
     }
 
-
-    for(int i=0;i< vectorListIDX; ++i)
-    {
-        printf("[ARRAY] %s[%d] = %s\n", key, i, vectorList[i]);
-    }
-
     PushObjectToContext(newVariable);
 }
 
@@ -308,10 +302,14 @@ char* GetValueFromIdentifier(char* key, int pos)
     }
 
     //TODO: Check the scope
-    if(storedData[variableLocation].isArray && pos > storedData[variableLocation].maxPosition)
+    bool arrayCheck = storedData[variableLocation].isArray && pos > storedData[variableLocation].maxPosition;
+    bool notArray = !storedData[variableLocation].isArray && pos != 0;
+    if(arrayCheck || notArray)
     {
         sprintf(error, "You are trying to access an illegal value. Max declared position is: %d.", storedData[variableLocation].maxPosition);
         yyerror(error);
     }
+
+    
     return storedData[variableLocation].charValue[pos];
 }

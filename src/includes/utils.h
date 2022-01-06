@@ -79,6 +79,10 @@ int GetTypeFromString(char* strType)
     }
     return -1;
 }
+char* GetTypeFromInt(int type)
+{
+    return types[type-1];
+}
 
 char* RemoveQuotesFromString(char* _s)
 {

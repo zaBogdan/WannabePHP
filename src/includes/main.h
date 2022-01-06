@@ -7,4 +7,6 @@
 #include "utils.h"
 #include "context.h"
 #include "data_structures.h"
+#include "functions.h"
 #include "symbol_tabels.h"
+#include "syntaxTree.h"

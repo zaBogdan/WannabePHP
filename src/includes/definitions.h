@@ -13,11 +13,13 @@ char currentContext[50], oldContext[50];
 bool constantContext = false;
 Object storedData[1000];
 CustomObj customObjects[150];
+Function functionSignatures[150];
 
 char identifiers[1150][100], customTypes[150][100];
 char* vectorList[150];
 
-uint16_t identifiersIDX = 0, storedDataIDX = 0, vectorListIDX = 0, customObjectsIDX = 0, customTypesIDX = 0;
+uint16_t identifiersIDX = 0, storedDataIDX = 0, vectorListIDX = 0, customObjectsIDX = 0, 
+        customTypesIDX = 0, functionSignaturesIDX = 0;
 
 char types[10][10] = {"Int", "Float", "Char", "String", "Boolean", "Void"};
 //bsion definitions
@@ -29,6 +31,8 @@ int max(const int _a, const int _b);
 Value GetValueFromChar(char* key, char* value, int type);
 int GetTypeFromString(char* strType);
 char* RemoveQuotesFromString(char* _s);
+char* GetTypeFromInt(int type);
+
 
 // context functions
 void SwitchContext(char* name);
@@ -60,6 +64,15 @@ void DeclareType(char* type);
 //working with variables
 char* GetValueFromIdentifier(char* key, int pos);
 
+//function related stuff
+int GetFunction(char* signature);
+void AddFunction(Function func);
+void DeclareFunction(char* type, char* name, int arguments);
+
 //Symbol table
-void DumpObjectsToFile(FILE* file);
 void FormatMessage(char* msg, Object obj);
+void DumpObjectsToFile(FILE* file);
+void DumpFunctionsToFile(FILE* file);
+
+//Syntax Tree + Print Function
+void PrintFunction(char* str1, char* str2);

@@ -68,7 +68,7 @@ $[_a-zA-Z][_a-zA-Z0-9]* {yylval.value=strdup(yytext);return IDENTIFIER;}
 [_a-zA-Z][_a-zA-Z0-9]* {yylval.value=strdup(yytext);return NUME_ARBITRAR;}
 [0-9]+ {yylval.value=strdup(yytext); return NUMAR;}
 [0-9]+.[0-9]+ {yylval.value=strdup(yytext); return NUMAR_FLOAT;}
-\"[a-zA-Z0-9 ]+\" {yylval.value=strdup(yytext); return QUOTES_STRING;}
+\"[a-zA-Z0-9 :]+\" {yylval.value=strdup(yytext); return QUOTES_STRING;}
 \'[a-zA-Z]\' {yylval.value=strdup(yytext); return CARACTER;}
 
 

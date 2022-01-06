@@ -4,6 +4,14 @@
 [global] Identifier: $stringy, Type: String, Value: "Hello world bitch"
 [global] Identifier: $charrr, Type: Char, Value: 'c'
 [global] Identifier: $array, Type: Array Int, Values: (5123, 12, 20, 25, 30, 124, 10.24, 8, 9, 10, 11, 12, 1337)
+[global] Identifier: $zab124, Type: Float, Value: (uninitialized)
+[global] Identifier: $doa423, Type: Int, Value: (uninitialized)
+[global] Identifier: $zab2042, Type: Int, Value: 200
+[global] Identifier: $zab, Type: Int, Value: 200
+[global] Identifier: $doa, Type: Float, Value: (uninitialized)
+[global] Identifier: $zaBogdan, Type: Int, Value: 204
+[global] Identifier: $zab2, Type: Int, Value: (uninitialized)
+[global] Identifier: $doa2, Type: Float, Value: (uninitialized)
 [main] Identifier: $x, Type: constant Int, Value: 102
 [main] Identifier: $floatingArray, Type: constant Array Float, Values: (12.21, 5123, 235432.342)
 [main] Identifier: $zabogdan5, Type: String, Value: "zaBogdan is literally the best"
