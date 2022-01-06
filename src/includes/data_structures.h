@@ -166,13 +166,75 @@ void PushElementInArray(char* value)
 //actual functions
 void DeclareArray(char* type, char* key, bool _init)
 {
-    // #ifdef __DEBUG__
+    char error[200];
+
     printf("[ARRAY] Type: %s, Name: %s, Context: %s\n", type, key, currentContext);
+    
+    if(IsIdentifierDeclared(key) != -1)
+    {
+        sprintf(error, "You can't redeclare `%s`. Try to be more creative.", key);
+        yyerror(error);
+    }
+
+    Object newVariable;
+    size_t _strLen;
+
+    _strLen = strlen(key);
+    newVariable.name = malloc(_strLen * sizeof(char));
+    strcpy(newVariable.name, key);
+
+    _strLen = strlen(currentContext);
+    newVariable.context = malloc(_strLen * sizeof(char));
+    strcpy(newVariable.context, currentContext);
+
+    //some settings
+    newVariable.constant = constantContext;
+    newVariable.initialized = _init;
+    newVariable.isArray = true;
+
+    //initializing some array stuff
+    newVariable.maxCapacity = 150;
+    newVariable.maxPosition = vectorListIDX;
+
+    if(newVariable.maxPosition > newVariable.maxCapacity)
+    {
+        sprintf(error, "Object `%s` of type array must have no more then 150 elements.", newVariable.name);
+        yyerror(error);
+    }
+
+    //setting the type
+    newVariable.type = GetTypeFromString(type);
+
+    //checking for missmatches
+    if(newVariable.constant && !newVariable.initialized)
+    {
+        sprintf(error, "You can't declare `%s` as constant object without initializing it.", newVariable.name);
+        yyerror(error);
+    }
+    
+    if(newVariable.initialized)
+    {
+        newVariable.charValue = malloc(vectorListIDX * sizeof(char*));
+        newVariable.value = malloc(vectorListIDX * sizeof(Value));
+
+        for(int idx = 0; idx < vectorListIDX; ++idx)
+        {
+            _strLen = strlen(vectorList[idx]);
+            newVariable.charValue[idx] = malloc(_strLen * sizeof(char));
+            strcpy(newVariable.charValue[idx], vectorList[idx]);
+            char* customKey = malloc((strlen(key)+10)*sizeof(char));
+            sprintf(customKey, "%s[%d]", key, idx);
+            newVariable.value[0] = GetValueFromChar(customKey, vectorList[idx], newVariable.type);
+        }
+    }
+
+
     for(int i=0;i< vectorListIDX; ++i)
     {
         printf("[ARRAY] %s[%d] = %s\n", key, i, vectorList[i]);
     }
-    // #endif
+
+    PushObjectToContext(newVariable);
 }
 
 

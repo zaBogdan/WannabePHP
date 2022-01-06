@@ -3,5 +3,7 @@
 [global] Identifier: $wavy, Type: Float, Value: (uninitialized)
 [global] Identifier: $stringy, Type: String, Value: "Hello world bitch"
 [global] Identifier: $charrr, Type: Char, Value: 'c'
+[global] Identifier: $array, Type: Array Int, Values: (10, 12, 20, 25, 30, 124, 10.24)
 [main] Identifier: $x, Type: constant Int, Value: 102
+[main] Identifier: $floatingArray, Type: constant Array Float, Values: (12.21, 214.235, 235432.342)
 [main] Identifier: $zabogdan5, Type: String, Value: "zaBogdan is literally the best"

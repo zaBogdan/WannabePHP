@@ -50,7 +50,12 @@ Value GetValueFromChar(char* key, char* value, int type)
             sprintf(error, "Invalid type assigned to variable '%s' (required type: boolean)", key);
             yyerror(error);
         case TYPE_STRING:
-            break;
+            if(value[0] == '"')
+            {
+                break;
+            }
+            sprintf(error, "Invalid type assigned to variable '%s' (required type: string)", key);
+            yyerror(error);
         default:
             sprintf(error, "You are trying to assign to an invalid type.");
             yyerror(error);

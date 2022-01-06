@@ -6,12 +6,12 @@ String $stringy -> "Hello world bitch";
 Char $charrr -> 'c';
 
 
-Int $array[] -> (10, $x, True, 'c', "This is a string", False, 10.24);
+Int $array[] -> (10, 12, 20, 25, 30, 124, 10.24);
 
 __main__
 Readonly Int $x -> 102;
 
-Readonly Float $array[] -> (12.21, 214.235, 235432.342);
+Readonly Float $floatingArray[] -> (12.21, 214.235, 235432.342);
 String $zabogdan5;
 
 

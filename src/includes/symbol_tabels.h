@@ -18,6 +18,14 @@ void FormatMessage(char* msg, Object obj)
     {
         if(obj.isArray)
         {
+            sprintf(msg, "%s Values: (", msg);
+            for(int idx = 0;idx < obj.maxPosition; ++idx)
+            {
+                sprintf(msg,"%s%s", msg, obj.charValue[idx]);
+                if(idx != obj.maxPosition-1)
+                    sprintf(msg, "%s, ", msg);
+            }
+            sprintf(msg, "%s)", msg);
 
         }else{
             sprintf(msg, "%s Value: %s", msg, obj.charValue[0]);
