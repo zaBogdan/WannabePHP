@@ -53,10 +53,10 @@
 "!==" {return BOOLEAN_NEQ;}
 
 
-"+" {return ARITMETIC_ADD;}
 "++" {return ARITMETIC_INCREMENT;}
-"-" {return ARITMETIC_SUB;}
 "--" {return ARITMETIC_DECREMENT;}
+"+" {return ARITMETIC_ADD;}
+"-" {return ARITMETIC_SUB;}
 "/" {return ARITMETIC_DIV;}
 "*" {return ARITMETIC_MUL;}
 "**" {return ARITMETIC_POW;}

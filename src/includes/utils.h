@@ -1,46 +1,74 @@
 #pragma once
-#include "constants.h"
+#include "definitions.h"
 
-char* RemoveQuotesFromString(char* _s)
+Value GetValueFromChar(char* key, char* value, int type)
 {
-    size_t _len = strlen(_s);
-    char* _new_s = malloc(_len * sizeof(_s[0]));
-    strncpy(_new_s, _s+1, _len-2);
-    _new_s[_len-2] = 0;
-    return _new_s;
+    char error[200];
+    Value newValue;
+    int tempValue;
+    float tempFloatVal;
+
+    switch(type)
+    {
+        case TYPE_INTEGER:
+                tempValue = strtol(value, NULL,10);
+                if(tempValue == 0L)
+                {
+                    sprintf(error, "Invalid type assigned to variable '%s' (required type: integer)", key);
+                    yyerror(error);
+                }
+                newValue.number = tempValue;
+                break;
+        case TYPE_FLOAT:
+            tempFloatVal = strtof(value, NULL);
+            if(tempFloatVal == 0.0F)
+            {
+                sprintf(error, "Invalid type assigned to variable '%s' (required type: float)", key);
+                yyerror(error);
+            }
+            newValue.real = tempFloatVal;
+            break;
+        case TYPE_CHAR:
+            if(value[0] != '\'')
+            {
+                sprintf(error, "Invalid type assigned to variable '%s' (required type: char)", key);
+                yyerror(error);
+            }
+            newValue.character = value[1];
+            break;
+        case TYPE_BOOL:
+            if(!strcmp(value, "True"))
+            {
+                newValue.binary = true;
+                break;
+            }
+            if(!strcmp(value, "False"))
+            {
+                newValue.binary = false;
+                break;
+            }
+            sprintf(error, "Invalid type assigned to variable '%s' (required type: boolean)", key);
+            yyerror(error);
+        case TYPE_STRING:
+            break;
+        default:
+            sprintf(error, "You are trying to assign to an invalid type.");
+            yyerror(error);
+
+    }
+
+    return newValue;
 }
 
-char* GetRootScope(char* currentScope)
+int GetTypeFromString(char* strType)
 {
-     size_t len = strlen(currentScope);
-     char* data;
-     for(int i=0;i<len;++i)
-     {
-          if(currentScope[i] == '.')
-          {
-               data = malloc((i+2)*sizeof(char));
-               strncpy(data, currentScope, i+1);
-               data[i+2] = 0;
-               return data;
-          }
-     }
-     return NULL;
-}
-
-/**
- * @brief Adds an identifier to the global list
- * 
- * @param key the name of the identifier
- */
-void AddIdentifier(char* key)
-{
-     if(allKeysIDX > 1000)
-     {
-          yyerror("You can have up to 1000 unique identifiers in your code.");
-     }
-
-     // here we will improve on it.
-     strcpy(allKeys[allKeysIDX], key);
-     ++allKeysIDX;
-
+    char types[10][10] = {
+        "Int", "Float", "Char", "String", "Boolean", "Void"
+    };
+    for(int idx = 0;idx < 6;++idx)
+    {
+        if(!strcmp(strType, types[idx]))
+            return idx+1;
+    }
+    return -1;
 }

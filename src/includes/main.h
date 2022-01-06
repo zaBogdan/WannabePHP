@@ -1,8 +1,9 @@
 #pragma once
-#include "constants.h"
+// declare types and functions
+#include "structures.h"
+#include "definitions.h"
+
+// now include everything
 #include "utils.h"
 #include "context.h"
-#include "variables.h"
-#include "classes.h"
-#include "symbolTable.h"
-#include "PrintStatements.h"
+#include "data_structures.h"

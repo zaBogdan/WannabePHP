@@ -11,7 +11,7 @@ extern int yylineno;
 %}
 
 %union {
-     int num;
+     struct suportedTypes* valori;
      char* value;
 }
 
@@ -33,6 +33,8 @@ extern int yylineno;
 %type <value> BOOL_FALSE
 %token <value> NUMAR_FLOAT
 %type <value> QUOTES_STRING
+
+%type <value> tipuri_de_argumente
 
 %%
 corect: program {printf("program corect sintactic\n");}
@@ -113,14 +115,14 @@ list_arg_apel_functie: tipuri_de_argumente
           ;
 
 
-tipuri_de_argumente: apel_functie
-               | IDENTIFICATOR
-               | NUMAR
-               | NUMAR_FLOAT
-               | QUOTES_STRING
-               | BOOL_FALSE
-               | BOOL_TRUE
-               | CARACTER
+tipuri_de_argumente: NUMAR { $$ = $1; }
+               | NUMAR_FLOAT { $$ = $1; }
+               | QUOTES_STRING { $$ = $1; }
+               | BOOL_FALSE { $$ = $1; }
+               | BOOL_TRUE { $$ = $1; }
+               | CARACTER { $$ = $1; }
+               // | apel_functie
+               // | IDENTIFICATOR
                ;
 
 asginare_variabila: IDENTIFICATOR ASSIGN NUMAR    {AssignVariable($1, $3);}
@@ -131,8 +133,12 @@ asginare_variabila: IDENTIFICATOR ASSIGN NUMAR    {AssignVariable($1, $3);}
      | IDENTIFICATOR ASSIGN BOOL_TRUE             {AssignVariable($1, $3);}
 
 // Readonly sau declaratie_tip;
-declaratie: CONSTANT {constat_enter();} declaratie_tip {constat_leave();} 
-          | declaratie_tip
+declaratie: CONSTANT {constat_enter();} tipuri_de_declaratii {constat_leave();} 
+          | tipuri_de_declaratii
+          ;
+
+tipuri_de_declaratii: declaratie_tip
+          | declaratie_array
           ;
 
 //avem de tipul public/privat
@@ -155,6 +161,28 @@ declaratie_tip: INTEGER IDENTIFICATOR                  { DeclareValue($1, $2, ""
           | BOOL IDENTIFICATOR ASSIGN BOOL_FALSE       { DeclareValue($1, $2, $4, true); }
           | BOOL IDENTIFICATOR ASSIGN BOOL_TRUE        { DeclareValue($1, $2, $4, true); }
           ;
+
+// Int[] $x -> (12,20,30,40)
+declaratie_array: INTEGER IDENTIFICATOR PARANTEZAPATRATADESCHISA PARANTEZAPATRATAINCHISA
+     | INTEGER IDENTIFICATOR PARANTEZAPATRATADESCHISA PARANTEZAPATRATAINCHISA ASSIGN {enter_array($1);} lista_array
+     | FLOAT IDENTIFICATOR PARANTEZAPATRATADESCHISA PARANTEZAPATRATAINCHISA
+     | FLOAT IDENTIFICATOR PARANTEZAPATRATADESCHISA PARANTEZAPATRATAINCHISA ASSIGN {enter_array($1);} lista_array
+     | CHAR IDENTIFICATOR PARANTEZAPATRATADESCHISA PARANTEZAPATRATAINCHISA
+     | CHAR IDENTIFICATOR PARANTEZAPATRATADESCHISA PARANTEZAPATRATAINCHISA ASSIGN {enter_array($1);} lista_array
+     | STRING IDENTIFICATOR PARANTEZAPATRATADESCHISA PARANTEZAPATRATAINCHISA
+     | STRING IDENTIFICATOR PARANTEZAPATRATADESCHISA PARANTEZAPATRATAINCHISA ASSIGN {enter_array($1);} lista_array
+     | BOOL IDENTIFICATOR PARANTEZAPATRATADESCHISA PARANTEZAPATRATAINCHISA
+     | BOOL IDENTIFICATOR PARANTEZAPATRATADESCHISA PARANTEZAPATRATAINCHISA ASSIGN {enter_array($1);} lista_array
+     ;
+
+
+
+lista_array: PARANTEZAROTUNDADESCHISA lista_valori_array PARANTEZAROTUNDAINCHISA 
+     ;
+
+lista_valori_array: tipuri_de_argumente { InitializeVector($1);}
+     | lista_valori_array VIRGULA tipuri_de_argumente { AddValueToArray($3); }
+     ;
 
 print_function: PRINT PARANTEZAPATRATADESCHISA QUOTES_STRING VIRGULA NUMAR PARANTEZAPATRATAINCHISA { PrintValue($3, $5); }
      | PRINT PARANTEZAPATRATADESCHISA QUOTES_STRING VIRGULA NUMAR_FLOAT PARANTEZAPATRATAINCHISA { PrintValue($3, $5); }

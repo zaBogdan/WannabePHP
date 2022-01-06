@@ -1,79 +1,36 @@
 #pragma once
-#include "constants.h"
+#include "definitions.h"
 
-/**
- * @brief Context related function are below
- */
-void switchContext(char* name)
+void SwitchContext(char* name)
 {
-     strcpy(oldScope, currentScope);
-     strcpy(currentScope, name);
+    char copyContext[50]; 
+    strcpy(copyContext, currentContext);
+    strcpy(oldContext, copyContext);
+    strcpy(currentContext, name);
+    printf("[ CONTEXT ] We are currently in %s. The old context was: %s\n",currentContext, oldContext);
 }
 
-void revertContext()
+void ExitContext()
 {
-     char copy[200];
-     strcpy(copy, oldScope);
-     switchContext(copy);
+    char copyContext[50]; 
+    strcpy(copyContext, currentContext);
+    strcpy(currentContext, oldContext);
+    strcpy(oldContext, copyContext);
+    printf("[ CONTEXT ] We are currently in %s. The old context was: %s\n",currentContext, oldContext);
 }
 
-//for classes
-void class_enter(char* className)
+void ClassContext(char* name)
 {
-     strncat(className, ".",1);
-     strcpy(oldScope, currentScope);
-     strcpy(currentScope, className);
+    strcat(name, ".");
+    SwitchContext(name);
 }
 
-void class_leave()
+void EnterConstant()
 {
-     strcpy(currentScope, oldScope);
+    constantContext = true;
 }
 
-//for functions
-void function_enter(char* functionName)
+void LeaveConstant()
 {
-     strcpy(oldScope, currentScope);
-     int len = strlen(currentScope);
-     if(currentScope[len-1] == '.')
-     {
-          //we are inside of a class
-          strncat(currentScope, functionName, strlen(functionName));
-     }else{
-          strcpy(currentScope, functionName);
-     }
-}
-
-void function_leave()
-{
-     int len = strlen(currentScope);
-     for(int i=0;i<len;i++)
-     {
-          if(currentScope[i] == '.')
-          {
-               //we are inside a class.
-               char* newScope = malloc(100*sizeof(char));
-               newScope = strtok(currentScope, ".");
-               strncat(newScope, ".", 1);
-               return;
-          }
-     }
-     strcpy(currentScope, oldScope);
-}
-
-/**
- * @brief Get the Current Context object
- *
- * @return 0 - if we are in a global context
- * @return 1 - if we are in a class context
- * @return 2 - if we are in a function context
- */
-int GetCurrentContext()
-{
-     if(!strcmp(currentScope, "global"))
-          return 0;
-     for(int i=0;i<strlen(currentScope);i++)
-          if(currentScope[i] == '.')
-               return 1;
-     return 2;
+    constantContext = false;
 }

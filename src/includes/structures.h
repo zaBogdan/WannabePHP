@@ -1,30 +1,25 @@
 #pragma once
+typedef struct RealValue{
+    bool binary;
+    float real;
+    int number;
+    char character;
+} Value;
 
-struct suportedTypes{
-     int number;
-     char character;
-     char* string;
-     float decimal;
-     bool binar;
-};
+typedef struct Object{
+    char* name;     //the name of the object (ex: $s)
+    char* context;  //the context (ex: global)
+    int type;       //the type (ex: 1- Int)
 
-struct Identifier{
-     //identifiers
-     char* name;
-     char* scopeName;
-     unsigned int type;
-     
-     //value that it holds
-     struct suportedTypes* value;
-     
-     //characteristics
-     bool isPrivate;
-     bool isConstant;
-     bool isInitialized;
-};
+    char** charValue; //the raw value (ex: "10")
+    Value* value; //the actual value (ex: 10)
 
-struct ClassInfo{
-     char* identifierName;
-     char* className;
-     char* scopeName;
-};
+    //some flags
+    bool constant;
+    bool initialized;
+
+    //some flags for array
+    bool isArray;
+    int maxPosition;
+    int maxCapacity;
+} Object;
