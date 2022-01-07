@@ -77,16 +77,26 @@ global_scope: DECLARATION_SECTION { SwitchContext("global"); } declarations PUNC
 main_scope: MAIN_SECTION { SwitchContext("main"); } code_block
         ;
 
-code_block: code_sequence PUNCTSIVIRGULA
-        | code_block code_sequence PUNCTSIVIRGULA
+code_block: code_sequence
+        | code_block code_sequence 
         ;
 
-code_sequence: declarations
-        | assign_value
-        | initialize_class
-        | print_function
-        | function_call
+code_sequence: declarations PUNCTSIVIRGULA
+        | assign_value PUNCTSIVIRGULA
+        | initialize_class PUNCTSIVIRGULA
+        | print_function PUNCTSIVIRGULA
+        | function_call PUNCTSIVIRGULA
+        | stmt_instructions
         ;
+
+stmt_instructions: IFSTMT PARANTEZAROTUNDADESCHISA boolean_expression PARANTEZAROTUNDAINCHISA stmt_code_format
+        | IFSTMT PARANTEZAROTUNDADESCHISA boolean_expression PARANTEZAROTUNDAINCHISA stmt_code_format ELSESTMT stmt_code_format
+        | DOSTMT stmt_code_format WHILESTMT PARANTEZAROTUNDADESCHISA boolean_expression PARANTEZAROTUNDAINCHISA
+        | WHILESTMT PARANTEZAROTUNDADESCHISA boolean_expression PARANTEZAROTUNDAINCHISA stmt_code_format
+        | FORSTMT PARANTEZAROTUNDADESCHISA assign_value PUNCTSIVIRGULA boolean_expression PUNCTSIVIRGULA assign_value PARANTEZAROTUNDAINCHISA stmt_code_format
+        ;
+
+stmt_code_format: ACOLADADESCHISA code_block ACOLADAINCHISA
 
 available_types: INTEGER { $$ = $1; }
         | FLOAT { $$ = $1; }
@@ -174,8 +184,6 @@ custom_available_values: NUMAR { $$ = $1; }
         | function_call { $$ = "0"; } //ValidateFunctionCall
         | arithemtic_expression { $$ = "0"; } //evaluate expression
         | boolean_expression { $$ = "1"; } //evaluate boolean
-        // | arithmetic expressions
-        // | boolean expressions
         ;
 
 

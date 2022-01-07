@@ -17,6 +17,19 @@ __custom_types__
 Int PutereMotor[Int $hello, Int $world]
 {
     Int $xxx -> 10;
+    daca($xxx > 10)
+    {
+        $xxx -> 200;
+    }
+    executa{
+        $x->200;
+    }catTimp(!$x);
+
+    
+    catTimp($x)
+    {
+        // x->200;
+    }
 }
 
 

@@ -13,6 +13,35 @@ __custom_types__
 Int PutereMotorOut(Float $zab124,Int $doa423, Char $chx)
 {
     Int $zab2042 -> 200;
+
+    daca($zab2042 < 10){
+        Print("Hello mommy", $zab2042);
+    }
+
+    daca(!$zab2042){
+        $bool -> True;
+    }altfel{
+        $bool -> False;
+    }
+
+    executa{
+        daca($zab2042 !== 12)
+        {
+            $bool -> True;
+        }
+    }catTimp(($zab2042+10) < 20)
+
+    catTimp($zab2042 !== 20)
+    {
+        $array[10] -> 12;
+    }
+
+    Int $x;
+    pentru($x -> 0; $x < 10; $x -> $x + 1)
+    {
+        $array[1] -> 2;
+    }
+
 }
 
 Int PutereMotorOut(Int $zab, Float $doa)
@@ -32,8 +61,6 @@ Object Mercedes{
 
 
 __main__
-Readonly Int $x -> 102;
-
 Readonly Float $floatingArray[] -> (12.21, $array[0], 235432.342);
 String $zabogdan5;
 

@@ -34,7 +34,7 @@
 
 
 "daca" {return IFSTMT;}
-"atunci" {return ELSESTMT;}
+"altfel" {return ELSESTMT;}
 "pentru" {return FORSTMT;}
 "executa" {return DOSTMT;}
 "catTimp" {return WHILESTMT;}
