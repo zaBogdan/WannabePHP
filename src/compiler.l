@@ -43,11 +43,12 @@
 
 "Print" {return PRINT;}
 
-"&" {return BOOLEAN_AND;}
-"|" {return BOOLEAN_OR;}
+"&&" {return BOOLEAN_AND;}
+"||" {return BOOLEAN_OR;}
 "!" {return BOOLEAN_NOT;}
 "<" {return BOOLEAN_LT;}
 "<=" {return BOOLEAN_LTE;}
+">" {return BOOLEAN_GT;}
 ">=" {return BOOLEAN_GTE;}
 "===" {return BOOLEAN_EQ;}
 "!==" {return BOOLEAN_NEQ;}
@@ -79,7 +80,7 @@ $[_a-zA-Z][_a-zA-Z0-9]* {yylval.value=strdup(yytext);return IDENTIFIER;}
 
 %%
 
-// // Mercedes a;
+// Mercedes a;
 // a.$xxxx -> 10;
 // x -> (x+5) + 6.2 + f(2) + v[2]
 // x > 1 && x < 10 

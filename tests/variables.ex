@@ -1,6 +1,6 @@
 __global__
 Boolean $bool -> True;
-Int $deci -> 5123;
+Int $deci -> 12;
 Float $wavy;
 String $stringy -> "Hello world bitch";
 Char $charrr -> 'c';
@@ -39,7 +39,11 @@ String $zabogdan5;
 
 Hello(10, $x, $array[4], World(200));
 
+Mercedes $a;
+$a.$zaBogdan -> ($x + 5) + 6.2 - $floatingArray[1] / PutereMotorOut(2+10*(5 + 2),$x, PutereMotorOut($array[10])) * 21 ** 20;
+$a.$zaBogdan -> ($x < $deci) && ($x === $deci);
+
 $array[12] -> 1337;
-Print("Hello world:" , $x);
+Print("Hello world:" , $x+5);
 
 $zabogdan5 -> "zaBogdan is literally the best";

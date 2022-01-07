@@ -6,6 +6,7 @@ int max(const int _a, const int _b)
 {
     return _a > _b ? _a : _b;
 }
+
 Value GetValueFromChar(char* key, char* value, int type)
 {
     char error[200];
@@ -17,7 +18,7 @@ Value GetValueFromChar(char* key, char* value, int type)
     {
         case TYPE_INTEGER:
                 tempValue = strtol(value, NULL,10);
-                if(tempValue == 0L)
+                if(tempValue == 0L && value[0] != '0')
                 {
                     sprintf(error, "Invalid type assigned to variable '%s' (required type: integer)", key);
                     yyerror(error);
@@ -26,7 +27,7 @@ Value GetValueFromChar(char* key, char* value, int type)
                 break;
         case TYPE_FLOAT:
             tempFloatVal = strtof(value, NULL);
-            if(tempFloatVal == 0.0F)
+            if(tempFloatVal == 0.0F && !(!strcmp(value, "0") || !strcmp(value, "0.0")))
             {
                 sprintf(error, "Invalid type assigned to variable '%s' (required type: float)", key);
                 yyerror(error);

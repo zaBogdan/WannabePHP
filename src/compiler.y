@@ -15,7 +15,7 @@ extern int yylineno;
     char* value;
 }
 
-%token VOID CLASA CONSTANT PUBLIC PRIVAT DECLARATION_SECTION CUSTOMTYPES_SECTION MAIN_SECTION ASSIGN PARANTEZAPATRATADESCHISA PARANTEZAPATRATAINCHISA PARANTEZAROTUNDADESCHISA PARANTEZAROTUNDAINCHISA ACOLADADESCHISA ACOLADAINCHISA PUNCTSIVIRGULA VIRGULA PUNCT IFSTMT ELSESTMT FORSTMT DOSTMT WHILESTMT RETURNSTMT PRINT BOOLEAN_AND BOOLEAN_OR BOOLEAN_NOT BOOLEAN_LT BOOLEAN_LTE BOOLEAN_GTE BOOLEAN_EQ BOOLEAN_NEQ ARITMETIC_INCREMENT ARITMETIC_DECREMENT ARITMETIC_ADD ARITMETIC_SUB ARITMETIC_DIV ARITMETIC_MUL ARITMETIC_POW
+%token VOID CLASA CONSTANT PUBLIC PRIVAT DECLARATION_SECTION CUSTOMTYPES_SECTION MAIN_SECTION ASSIGN PARANTEZAPATRATADESCHISA PARANTEZAPATRATAINCHISA PARANTEZAROTUNDADESCHISA PARANTEZAROTUNDAINCHISA ACOLADADESCHISA ACOLADAINCHISA PUNCTSIVIRGULA VIRGULA PUNCT IFSTMT ELSESTMT FORSTMT DOSTMT WHILESTMT RETURNSTMT PRINT BOOLEAN_AND BOOLEAN_OR BOOLEAN_NOT BOOLEAN_LT BOOLEAN_LTE BOOLEAN_GTE BOOLEAN_EQ BOOLEAN_NEQ ARITMETIC_INCREMENT ARITMETIC_DECREMENT ARITMETIC_ADD ARITMETIC_SUB ARITMETIC_DIV  BOOLEAN_GT ARITMETIC_MUL ARITMETIC_POW
 
 %start entry_point
 
@@ -28,6 +28,10 @@ extern int yylineno;
 
 %type <num> function_argument_list
 
+%left ARITMETIC_ADD ARITMETIC_SUB ARITMETIC_DIV ARITMETIC_MUL ARITMETIC_POW
+%left BOOLEAN_AND BOOLEAN_OR BOOLEAN_LT BOOLEAN_LTE BOOLEAN_GTE BOOLEAN_EQ BOOLEAN_NEQ BOOLEAN_GT
+
+%right BOOLEAN_NOT 
 %%
 
 entry_point: code_structure { printf("Code syntax is correct.\n"); }
@@ -46,7 +50,7 @@ custom_scope: CUSTOMTYPES_SECTION declare_object
         ;
 
 //the scope should be class name ($2)
-declare_object: CLASA NUME_ARBITRAR ACOLADADESCHISA object_block ACOLADAINCHISA PUNCTSIVIRGULA
+declare_object: CLASA NUME_ARBITRAR {DeclareType($2);} ACOLADADESCHISA object_block ACOLADAINCHISA PUNCTSIVIRGULA
 
 object_block: object_code 
         | object_block object_code 
@@ -100,9 +104,9 @@ available_values: NUMAR { $$ = $1; }
         | CARACTER { $$ = $1; }
         | IDENTIFIER { $$ = GetValueFromIdentifier($1,0); } 
         | IDENTIFIER PARANTEZAPATRATADESCHISA NUMAR PARANTEZAPATRATAINCHISA { $$ = GetValueFromIdentifier($1,atoi($3)); } 
-        | function_call { $$ = "0"; }
-        //arithemic expressions
-        //boolean expressions
+        | function_call { $$ = "0"; } //ValidateFunctionCall
+        | arithemtic_expression { $$ = "1"; } //evaluate expression
+        | boolean_expression { $$ = "1"; } //evaluate boolean
         ;
 
 function_call: NUME_ARBITRAR PARANTEZAROTUNDADESCHISA function_call_args_list PARANTEZAROTUNDAINCHISA
@@ -113,6 +117,27 @@ function_call_args_list: available_values
         | function_call_args_list VIRGULA available_values
         ;
 
+//all thepossible arithemtic expressions
+arithemtic_expression: custom_available_values ARITMETIC_ADD custom_available_values 
+        | custom_available_values ARITMETIC_SUB custom_available_values
+        | custom_available_values ARITMETIC_DIV custom_available_values
+        | custom_available_values ARITMETIC_POW custom_available_values
+        | custom_available_values ARITMETIC_MUL custom_available_values
+        | PARANTEZAROTUNDADESCHISA arithemtic_expression PARANTEZAROTUNDAINCHISA
+        ;
+
+
+boolean_expression: custom_available_values BOOLEAN_AND custom_available_values
+        | custom_available_values BOOLEAN_OR custom_available_values
+        | custom_available_values BOOLEAN_LT custom_available_values
+        | custom_available_values BOOLEAN_LTE custom_available_values
+        | custom_available_values BOOLEAN_GT custom_available_values
+        | custom_available_values BOOLEAN_GTE custom_available_values
+        | custom_available_values BOOLEAN_EQ custom_available_values
+        | custom_available_values BOOLEAN_NEQ custom_available_values
+        | BOOLEAN_NOT custom_available_values
+        | PARANTEZAROTUNDADESCHISA boolean_expression PARANTEZAROTUNDAINCHISA
+        ;
 
 //to be decided what to return and how to manage it...
 value_list: {InitializeArray();} available_values { PushElementInArray($2); }
@@ -121,8 +146,8 @@ value_list: {InitializeArray();} available_values { PushElementInArray($2); }
 
 assign_value: IDENTIFIER ASSIGN available_values { AssignValue($1, $3, 0); } //assign normal value
         | IDENTIFIER PARANTEZAPATRATADESCHISA NUMAR PARANTEZAPATRATAINCHISA ASSIGN available_values { AssignValue($1, $6, atoi($3)); }//assign to array on pos
-        | IDENTIFIER PUNCT IDENTIFIER ASSIGN available_values //assign to class
-        ;
+        | IDENTIFIER PUNCT IDENTIFIER ASSIGN available_values { AssignValue($3, $5, 0); } //assign to class
+        ;//TODO: Switch context to type of identifer $1
 
 initialize_class: NUME_ARBITRAR IDENTIFIER { DeclareClass($1,$2); }//init class
 
@@ -146,6 +171,9 @@ custom_available_values: NUMAR { $$ = $1; }
         | NUMAR_FLOAT { $$ = $1; }
         | IDENTIFIER { $$ = GetValueFromIdentifier($1,0); } 
         | IDENTIFIER PARANTEZAPATRATADESCHISA NUMAR PARANTEZAPATRATAINCHISA { $$ = GetValueFromIdentifier($1,atoi($3)); }
+        | function_call { $$ = "0"; } //ValidateFunctionCall
+        | arithemtic_expression { $$ = "0"; } //evaluate expression
+        | boolean_expression { $$ = "1"; } //evaluate boolean
         // | arithmetic expressions
         // | boolean expressions
         ;
