@@ -50,7 +50,7 @@ custom_scope: CUSTOMTYPES_SECTION declare_object
         ;
 
 //the scope should be class name ($2)
-declare_object: CLASA NUME_ARBITRAR {DeclareType($2);} ACOLADADESCHISA object_block ACOLADAINCHISA PUNCTSIVIRGULA
+declare_object: CLASA NUME_ARBITRAR {DeclareType($2); ClassContext($2);} ACOLADADESCHISA object_block ACOLADAINCHISA PUNCTSIVIRGULA {ExitContext();}
 
 object_block: object_code 
         | object_block object_code 
@@ -62,7 +62,7 @@ object_code: PUBLIC declarations PUNCTSIVIRGULA
         ;
 
 //the scope should be either class_name.function_name or function_name (declared in global context) 
-declare_function: available_types NUME_ARBITRAR PARANTEZAROTUNDADESCHISA function_argument_list PARANTEZAROTUNDAINCHISA {DeclareFunction($1, $2, $4);} ACOLADADESCHISA code_block ACOLADAINCHISA
+declare_function: available_types NUME_ARBITRAR {FunctionContext($2);} PARANTEZAROTUNDADESCHISA function_argument_list PARANTEZAROTUNDAINCHISA {DeclareFunction($1, $2, $5);} ACOLADADESCHISA code_block ACOLADAINCHISA { ExitContext(); }
         ;
 
 //use the identifiersIDX and count how many args do you have. Just subtract it and you have it all.

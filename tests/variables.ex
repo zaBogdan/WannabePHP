@@ -44,6 +44,11 @@ Int PutereMotorOut(Float $zab124,Int $doa423, Char $chx)
 
 }
 
+Int BestCompiler(Int $HyWorld)
+{
+    $HyWorld -> 20;
+}
+
 Int PutereMotorOut(Int $zab, Float $doa)
 {
     $zab -> 200;

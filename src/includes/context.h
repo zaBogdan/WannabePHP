@@ -8,7 +8,7 @@ void SwitchContext(char* name)
     strcpy(oldContext, copyContext);
     strcpy(currentContext, name);
     #ifdef __DEBUG__
-    printf("[ CONTEXT ] We are currently in %s. The old context was: %s\n",currentContext, oldContext);
+    printf("[ CONTEXT ] We are currently in '%s'. The old context was: '%s'\n",currentContext, oldContext);
     #endif
 }
 
@@ -19,7 +19,7 @@ void ExitContext()
     strcpy(currentContext, oldContext);
     strcpy(oldContext, copyContext);
     #ifdef __DEBUG__
-    printf("[ CONTEXT ] We are currently in %s. The old context was: %s\n",currentContext, oldContext);
+    printf("[ CONTEXT ] We are currently in '%s'. The old context was: '%s'\n",currentContext, oldContext);
     #endif
 
 }
@@ -28,6 +28,19 @@ void ClassContext(char* name)
 {
     strcat(name, ".");
     SwitchContext(name);
+}
+
+void FunctionContext(char* name)
+{
+    char funcName[150];
+    if(currentContext[strlen(currentContext)-1] == '.')
+    {
+        strcpy(funcName, currentContext);
+        strcat(funcName, name);
+    }else{
+        strcpy(funcName, name);
+    }
+    SwitchContext(funcName);
 }
 
 void EnterConstant()
