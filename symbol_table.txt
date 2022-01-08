@@ -1,14 +1,14 @@
 [global] Identifier: $bool, Type: Boolean, Value: True
-[global] Identifier: $deci, Type: Int, Value: 12
+[global] Identifier: $deci, Type: Int, Value: 125
 [global] Identifier: $wavy, Type: Float, Value: (uninitialized)
 [global] Identifier: $stringy, Type: String, Value: "Hello world bitch"
 [global] Identifier: $charrr, Type: Char, Value: 'c'
-[global] Identifier: $array, Type: Array Int, Values: (12, 2, 20, 25, 30, 124, 10.24, 8, 9, 10, 12, 12, 1337)
+[global] Identifier: $array, Type: Array Int, Values: (125, 2, 53453,5345345, 2342,12342, (null), (null), (null), (null), (null), (null), 12, (null), 1337)
 [PutereMotorOut] Identifier: $zab124, Type: Float, Value: (uninitialized)
 [PutereMotorOut] Identifier: $doa423, Type: Int, Value: (uninitialized)
 [PutereMotorOut] Identifier: $chx, Type: Char, Value: (uninitialized)
 [PutereMotorOut] Identifier: $zab2042, Type: Int, Value: 200
-[PutereMotorOut] Identifier: $x, Type: Int, Value: 1
+[PutereMotorOut] Identifier: $xx, Type: Int, Value: 1
 [BestCompiler] Identifier: $HyWorld, Type: Int, Value: 20
 [PutereMotorOut] Identifier: $zab, Type: Int, Value: 200
 [PutereMotorOut] Identifier: $doa, Type: Float, Value: (uninitialized)
@@ -16,5 +16,6 @@
 [Mercedes.] Identifier: $data, Type: Int, Value: 13372
 [Mercedes.PutereMotor] Identifier: $zab2, Type: Int, Value: (uninitialized)
 [Mercedes.PutereMotor] Identifier: $doa2, Type: Float, Value: (uninitialized)
-[main] Identifier: $floatingArray, Type: constant Array Float, Values: (12.21, 12, 235432.342)
+[main] Identifier: $floatingArray, Type: constant Array Float, Values: (12.21, 125, 235432.342)
 [main] Identifier: $zabogdan5, Type: String, Value: "zaBogdan is literally the best"
+[main] Identifier: $x, Type: Int, Value: 213

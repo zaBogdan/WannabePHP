@@ -156,7 +156,7 @@ value_list: {InitializeArray();} available_values { PushElementInArray($2); }
 
 assign_value: IDENTIFIER ASSIGN available_values { AssignValue($1, $3, 0); } //assign normal value
         | IDENTIFIER PARANTEZAPATRATADESCHISA NUMAR PARANTEZAPATRATAINCHISA ASSIGN available_values { AssignValue($1, $6, atoi($3)); }//assign to array on pos
-        | IDENTIFIER { SwitchToContextOfIdentifer($1); } PUNCT IDENTIFIER ASSIGN available_values { AssignValue($4, $6, 0); ExitContext(); } //assign to class
+        | IDENTIFIER PUNCT {SwitchToContextOfIdentifer($1);} IDENTIFIER { ExitContext();} ASSIGN available_values { SwitchToContextOfIdentifer($1); AssignValue($4, $7, 0); ExitContext(); } //assign to class
         ;//TODO: Switch context to type of identifer $1
 
 initialize_class: NUME_ARBITRAR IDENTIFIER { DeclareClass($1,$2); }//init class

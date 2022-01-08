@@ -141,7 +141,7 @@ void AssignValue(char* key, char* value, int pos)
         yyerror(error);
     }
 
-    //TODO: Check if the variable is visible in your scope.
+    //Check if the variable is visible in your scope.
     if(!IsInScope(storedData[variableLocation].context))
     {
         sprintf(error, "Variabile '%s' was declared in '%s' context. We are in: %s",key,storedData[variableLocation].context, currentContext);
@@ -345,6 +345,12 @@ char* GetValueFromIdentifier(char* key, int pos)
     }
 
     //TODO: Check the scope
+    if(!IsInScope(storedData[variableLocation].context))
+    {
+        sprintf(error, "Variabile '%s' was declared in '%s' context. We are in: %s",key,storedData[variableLocation].context, currentContext);
+        yyerror(error);
+    }
+
     bool arrayCheck = storedData[variableLocation].isArray && pos > storedData[variableLocation].maxPosition;
     bool notArray = !storedData[variableLocation].isArray && pos != 0;
     if(arrayCheck || notArray)

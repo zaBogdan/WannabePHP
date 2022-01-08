@@ -1,12 +1,12 @@
 __global__
 Boolean $bool -> True;
-Int $deci -> 12;
+Int $deci -> 125;
 Float $wavy;
 String $stringy -> "Hello world bitch";
 Char $charrr -> 'c';
 
 
-Int $array[] -> ($deci, 12, 20, 25, 30, 124, 10.24, 8, 9, 10, 11, 12);
+Int $array[] -> ($deci, 130,234,53453,5345345,2342,12342);
 
 __custom_types__
 
@@ -36,8 +36,8 @@ Int PutereMotorOut(Float $zab124,Int $doa423, Char $chx)
         $array[10] -> 12;
     }
 
-    Int $x;
-    pentru($x -> 0; $x < 10; $x -> $x + 1)
+    Int $xx;
+    pentru($xx -> 0; $xx < 10; $xx -> $xx + 1)
     {
         $array[1] -> 2;
     }
@@ -69,7 +69,7 @@ Object Mercedes{
 __main__
 Readonly Float $floatingArray[] -> (12.21, $array[0], 235432.342);
 String $zabogdan5;
-
+Int $x -> 213;
 Hello(10, $x, $array[4], World(200));
 
 Mercedes $a;
