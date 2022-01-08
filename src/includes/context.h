@@ -43,6 +43,36 @@ void FunctionContext(char* name)
     SwitchContext(funcName);
 }
 
+bool IsInScope(char* scope)
+{
+    size_t _len = strlen(currentContext);
+    
+    //checking if variabile is global
+    if(!strcmp(scope, "global"))
+        return true;
+
+    //checking if the scope matches
+    if(!strcmp(currentContext, scope))
+        return true;
+
+    //doing further checking for object variables
+    for(int idx=0;idx<_len;++idx)
+    {
+        //if we find . we are inside a class
+        if(currentContext[idx]=='.')
+        {
+            char* classContext = malloc((idx+2)*sizeof(char));
+            strncpy(classContext, currentContext, idx+1);
+            classContext[idx+2] = 0;
+            if(!strcmp(classContext, scope))
+                return true;
+            break;
+        }
+    }
+
+    return false;
+}
+
 void EnterConstant()
 {
     constantContext = true;

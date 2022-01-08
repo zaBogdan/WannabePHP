@@ -13,6 +13,7 @@
 [PutereMotorOut] Identifier: $zab, Type: Int, Value: 200
 [PutereMotorOut] Identifier: $doa, Type: Float, Value: (uninitialized)
 [Mercedes.] Identifier: $zaBogdan, Type: Int, Value: 1
+[Mercedes.] Identifier: $data, Type: Int, Value: 13372
 [Mercedes.PutereMotor] Identifier: $zab2, Type: Int, Value: (uninitialized)
 [Mercedes.PutereMotor] Identifier: $doa2, Type: Float, Value: (uninitialized)
 [main] Identifier: $floatingArray, Type: constant Array Float, Values: (12.21, 12, 235432.342)

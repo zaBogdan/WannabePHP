@@ -33,18 +33,20 @@ int GetTypeFromString(char* strType);
 char* RemoveQuotesFromString(char* _s);
 char* GetTypeFromInt(int type);
 
-
 // context functions
 void SwitchContext(char* name);
 void ExitContext();
 void ClassContext(char* name);
 void EnterConstant();
 void LeaveConstant();
+bool IsInScope(char* scope);
+
 
 //Data structures (global helper functions)
 void PushIdentifier(char* id);
 void PushObjectToContext(Object newObj);
 int IsIdentifierDeclared(char* name);
+void SwitchToContextOfIdentifer(char* id);
 
 //helpers for arrays
 void InitializeArray();

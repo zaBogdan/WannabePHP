@@ -56,10 +56,11 @@ Int PutereMotorOut(Int $zab, Float $doa)
 
 Object Mercedes{
     public Int $zaBogdan -> 204;
+    public Int $data -> 204;
 
     Int PutereMotor(Int $zab2, Float $doa2)
     {
-        $zab -> 200;
+        $zaBogdan -> 200;
     }
 
 };
@@ -74,6 +75,8 @@ Hello(10, $x, $array[4], World(200));
 Mercedes $a;
 $a.$zaBogdan -> ($x + 5) + 6.2 - $floatingArray[1] / PutereMotorOut(2+10*(5 + 2),$x, PutereMotorOut($array[10])) * 21 ** 20;
 $a.$zaBogdan -> ($x < $deci) && ($x === $deci);
+
+$a.$data -> 13372;
 
 $array[12] -> 1337;
 Print("Hello world:" , $x+5);

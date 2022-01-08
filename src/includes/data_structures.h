@@ -96,6 +96,40 @@ void DeclareVariable(char* type, char* key, char* value, bool _init)
 
 }
 
+void SwitchToContextOfIdentifer(char* id)
+{
+    char error[200];
+    size_t classLocation = -1;
+    
+    for(int idx = 0;idx < customObjectsIDX; ++idx)
+    {
+        if(!strcmp(customObjects[idx].id, id))
+        {
+            classLocation = idx;
+            break;
+        }
+    }
+
+
+    if(classLocation == -1)
+    {
+        sprintf(error, "You can't assign a value to an undeclared object `%s`. Declare it first.", id);
+        yyerror(error);
+    }
+
+    if(strcmp(currentContext, "main"))
+    {
+        sprintf(error, "Variable '%s' is only visible in main context. (Current context: '%s')", id, currentContext);
+        yyerror(error);
+    }
+
+    char* changingContext = malloc(strlen(customObjects[classLocation].typeName+2)*sizeof(char));
+    strcpy(changingContext, customObjects[classLocation].typeName);
+    strcat(changingContext, ".");
+    SwitchContext(changingContext);
+}
+
+
 void AssignValue(char* key, char* value, int pos)
 {
     char error[200];
@@ -108,6 +142,11 @@ void AssignValue(char* key, char* value, int pos)
     }
 
     //TODO: Check if the variable is visible in your scope.
+    if(!IsInScope(storedData[variableLocation].context))
+    {
+        sprintf(error, "Variabile '%s' was declared in '%s' context. We are in: %s",key,storedData[variableLocation].context, currentContext);
+        yyerror(error);
+    }
 
     if(storedData[variableLocation].constant)
     {
@@ -287,6 +326,10 @@ void DeclareClass(char* type, char* id)
     strcpy(cls.id, id);
 
     PushIdentifier(id);
+
+    customObjects[customObjectsIDX] = cls;
+    ++customObjectsIDX;
+
 }
 
 //operations with variables
