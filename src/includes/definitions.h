@@ -18,6 +18,8 @@ Function functionSignatures[150];
 char identifiers[1150][100], customTypes[150][100];
 char* vectorList[150];
 
+Node* rootNode = NULL;
+
 uint16_t identifiersIDX = 0, storedDataIDX = 0, vectorListIDX = 0, customObjectsIDX = 0, 
         customTypesIDX = 0, functionSignaturesIDX = 0;
 
@@ -85,3 +87,4 @@ void DumpFunctionsToFile(FILE* file);
 
 //Syntax Tree + Print Function
 void PrintFunction(char* str1, char* str2);
+// char* AddOperation(char* arith, char* val1, char* op, char* val2);

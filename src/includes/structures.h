@@ -47,3 +47,11 @@ typedef struct arrays{
     char* values[150];
     int currentIDX;
 } Array;
+
+typedef struct node
+{
+    int data;
+    int type;
+    struct node* left;
+    struct node* right;
+} Node;
