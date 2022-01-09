@@ -6,7 +6,7 @@ String $stringy -> "Hello world bitch";
 Char $charrr -> 'c';
 
 
-Int $array[] -> ($deci, 130,234,53453,5345345,2342,12342);
+Int $array[] -> ($deci, 130, 234, 53453, 5345345, 2342, 12342);
 
 __custom_types__
 
@@ -69,8 +69,9 @@ Object Mercedes{
 __main__
 Readonly Float $floatingArray[] -> (12.21, $array[0], 235432.342);
 String $zabogdan5;
-Int $x -> 213;
-Hello(10, $x, $array[4], World(200));
+Int $x -> 124;
+Print("hello from main", 10);
+Hello(10, $x, $array[2], World(12));
 
 Mercedes $a;
 $a.$zaBogdan -> ($x + 5) + 6.2 - $floatingArray[1] / PutereMotorOut(2+10*(5 + 2),$x, PutereMotorOut($array[10])) * 21 ** 20;

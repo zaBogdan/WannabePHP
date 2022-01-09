@@ -52,7 +52,7 @@ void DumpFunctionsToFile(FILE* file)
     char msg[200];
     for(int idx=0;idx<functionSignaturesIDX;++idx)
     {
-        sprintf(msg, "[%s] Signature: %s with parameters:", functionSignatures[idx].context, functionSignatures[idx].functionSignature);
+        sprintf(msg, "[%s] Signature: '%s', Return type: %s, with parameters:", functionSignatures[idx].context, functionSignatures[idx].functionSignature, functionSignatures[idx].returnType);
         for(int param = 0;param<functionSignatures[idx].paramCount;++param)
         {
             int id = functionSignatures[idx].parametersIDX[param];

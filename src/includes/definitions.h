@@ -70,6 +70,7 @@ char* GetValueFromIdentifier(char* key, int pos);
 int GetFunction(char* signature);
 void AddFunction(Function func);
 void DeclareFunction(char* type, char* name, int arguments);
+void FunctionCall(char* name);
 
 //Symbol table
 void FormatMessage(char* msg, Object obj);

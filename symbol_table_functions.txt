@@ -1,4 +1,4 @@
-[PutereMotorOut] Signature: Int PutereMotorOut(Float,Int,Char) with parameters: $zab124, $doa423, $chx
-[BestCompiler] Signature: Int BestCompiler(Int) with parameters: $HyWorld
-[PutereMotorOut] Signature: Int PutereMotorOut(Int,Float) with parameters: $zab, $doa
-[Mercedes.PutereMotor] Signature: Int PutereMotor(Int,Float) with parameters: $zab2, $doa2
+[PutereMotorOut] Signature: 'PutereMotorOut(Float,Int,Char)', Return type: Int, with parameters: $zab124, $doa423, $chx
+[BestCompiler] Signature: 'BestCompiler(Int)', Return type: Int, with parameters: $HyWorld
+[PutereMotorOut] Signature: 'PutereMotorOut(Int,Float)', Return type: Int, with parameters: $zab, $doa
+[Mercedes.PutereMotor] Signature: 'PutereMotor(Int,Float)', Return type: Int, with parameters: $zab2, $doa2

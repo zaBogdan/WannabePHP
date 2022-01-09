@@ -38,5 +38,12 @@ typedef struct funcs{
 
     int paramCount;
 
+    char* returnType;
     char* functionSignature;
 } Function;
+
+
+typedef struct arrays{
+    char values[150];
+    int currentIDX;
+} Array;

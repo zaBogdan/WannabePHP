@@ -29,7 +29,11 @@ void DeclareFunction(char* type, char* name, int arguments)
     func.context = malloc(strlen(currentContext)*sizeof(char));
     strcpy(func.context, currentContext);
 
-    sprintf(signature, "%s %s(", type, name);
+    // func.returnType = GetTypeFromString(type);
+    func.returnType = malloc(strlen(type)*sizeof(type));
+    strcpy(func.returnType, type);
+
+    sprintf(signature, "%s(", name);
     
     func.types = malloc((identifiersIDX-arguments)*sizeof(int));
     func.parametersIDX = malloc(arguments*sizeof(int));
@@ -60,5 +64,16 @@ void DeclareFunction(char* type, char* name, int arguments)
         yyerror(error);
     }
 
+    //check the current context
+
     AddFunction(func);
+}
+
+void FunctionCall(char* name)
+{
+    printf("The name of the function is: %s\n", name);
+    for(int idx=0;idx<vectorListIDX;++idx)
+    {
+        printf("The value is: %s\n", vectorList[idx]);
+    }
 }

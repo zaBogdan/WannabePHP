@@ -119,11 +119,12 @@ available_values: NUMAR { $$ = $1; }
         | boolean_expression { $$ = "1"; } //evaluate boolean
         ;
 
-function_call: NUME_ARBITRAR PARANTEZAROTUNDADESCHISA function_call_args_list PARANTEZAROTUNDAINCHISA
+function_call: NUME_ARBITRAR PARANTEZAROTUNDADESCHISA function_call_args_list PARANTEZAROTUNDAINCHISA { FunctionCall($1); }
+        // | IDENTIFIER PUNCT
         ;
 
 
-function_call_args_list: available_values
+function_call_args_list: available_values 
         | function_call_args_list VIRGULA available_values
         ;
 

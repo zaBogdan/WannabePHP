@@ -3,7 +3,7 @@
 [global] Identifier: $wavy, Type: Float, Value: (uninitialized)
 [global] Identifier: $stringy, Type: String, Value: "Hello world bitch"
 [global] Identifier: $charrr, Type: Char, Value: 'c'
-[global] Identifier: $array, Type: Array Int, Values: (125, 2, 53453,5345345, 2342,12342, (null), (null), (null), (null), (null), (null), 12, (null), 1337)
+[global] Identifier: $array, Type: Array Int, Values: (125, 2, 234, 53453, 5345345, 2342, 12342, (null), (null), (null), 12, (null), 1337)
 [PutereMotorOut] Identifier: $zab124, Type: Float, Value: (uninitialized)
 [PutereMotorOut] Identifier: $doa423, Type: Int, Value: (uninitialized)
 [PutereMotorOut] Identifier: $chx, Type: Char, Value: (uninitialized)
@@ -18,4 +18,4 @@
 [Mercedes.PutereMotor] Identifier: $doa2, Type: Float, Value: (uninitialized)
 [main] Identifier: $floatingArray, Type: constant Array Float, Values: (12.21, 125, 235432.342)
 [main] Identifier: $zabogdan5, Type: String, Value: "zaBogdan is literally the best"
-[main] Identifier: $x, Type: Int, Value: 213
+[main] Identifier: $x, Type: Int, Value: 124
