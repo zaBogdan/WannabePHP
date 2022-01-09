@@ -26,8 +26,8 @@ void DeclareFunction(char* type, char* name, int arguments)
     func.name = malloc(strlen(name) * sizeof(char));
     strcpy(func.name, name);
 
-    func.context = malloc(strlen(currentContext)*sizeof(char));
-    strcpy(func.context, currentContext);
+    func.context = malloc(strlen(oldContext)*sizeof(char));
+    strcpy(func.context, oldContext);
 
     // func.returnType = GetTypeFromString(type);
     func.returnType = malloc(strlen(type)*sizeof(type));
@@ -69,11 +69,52 @@ void DeclareFunction(char* type, char* name, int arguments)
     AddFunction(func);
 }
 
-void FunctionCall(char* name)
+Array InitializeCallStackArray()
 {
-    printf("The name of the function is: %s\n", name);
-    for(int idx=0;idx<vectorListIDX;++idx)
+    Array data;
+    data.currentIDX = 0;
+    return data;
+}
+
+void PushValueToCallStack(Array* arr, char* value)
+{
+    arr->values[arr->currentIDX] = malloc(strlen(value) * sizeof(value[0]));
+    strcpy(arr->values[arr->currentIDX], value);
+    ++arr->currentIDX;
+}
+
+void FunctionCall(char* name, Array values)
+{
+    //build function signature
+    char signature[400], error[200];
+
+    sprintf(signature, "%s(", name);
+
+    for(int idx=0;idx<values.currentIDX;++idx)
     {
-        printf("The value is: %s\n", vectorList[idx]);
+        // printf("Type of value '%s' is '%s'\n", values.values[idx], DecideValueType(values.values[idx]));
+        if(idx+1 != values.currentIDX)
+        {
+            sprintf(signature, "%s%s,", signature, DecideValueType(values.values[idx]));
+        }else{
+            sprintf(signature, "%s%s)", signature, DecideValueType(values.values[idx]));
+
+        }
     }
+
+    int functionPos = GetFunction(signature);
+
+    if(functionPos == -1)
+    {
+        sprintf(error, "No function with signature '%s' has been found.", signature);
+        yyerror(error);
+    }
+
+    //checking the context
+    if(!IsInScope(functionSignatures[functionPos].context))
+    {
+        sprintf(error, "Function '%s' is only available in %s context. (Current: %s)", signature, functionSignatures[functionPos].context, currentContext);
+        yyerror(error);
+    }
+    
 }

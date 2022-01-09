@@ -9,9 +9,16 @@
 [PutereMotorOut] Identifier: $chx, Type: Char, Value: (uninitialized)
 [PutereMotorOut] Identifier: $zab2042, Type: Int, Value: 200
 [PutereMotorOut] Identifier: $xx, Type: Int, Value: 1
-[BestCompiler] Identifier: $HyWorld, Type: Int, Value: 20
+[BestCompiler] Identifier: $HyWorld, Type: Float, Value: 20
+[BestCompiler] Identifier: $Wassup, Type: String, Value: (uninitialized)
+[BestCompiler] Identifier: $num1, Type: Int, Value: (uninitialized)
+[BestCompiler] Identifier: $num2, Type: Int, Value: (uninitialized)
+[BestCompiler] Identifier: $val1, Type: Int, Value: (uninitialized)
+[BestCompiler] Identifier: $val2, Type: Int, Value: (uninitialized)
+[BestCompiler] Identifier: $val3, Type: Int, Value: (uninitialized)
 [PutereMotorOut] Identifier: $zab, Type: Int, Value: 200
 [PutereMotorOut] Identifier: $doa, Type: Float, Value: (uninitialized)
+[PutereMotorOut] Identifier: $weDidIt, Type: Int, Value: (uninitialized)
 [Mercedes.] Identifier: $zaBogdan, Type: Int, Value: 1
 [Mercedes.] Identifier: $data, Type: Int, Value: 13372
 [Mercedes.PutereMotor] Identifier: $zab2, Type: Int, Value: (uninitialized)

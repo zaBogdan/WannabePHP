@@ -13,6 +13,7 @@ extern int yylineno;
 %union{
     int num;
     char* value;
+    Array arr;
 }
 
 %token VOID CLASA CONSTANT PUBLIC PRIVAT DECLARATION_SECTION CUSTOMTYPES_SECTION MAIN_SECTION ASSIGN PARANTEZAPATRATADESCHISA PARANTEZAPATRATAINCHISA PARANTEZAROTUNDADESCHISA PARANTEZAROTUNDAINCHISA ACOLADADESCHISA ACOLADAINCHISA PUNCTSIVIRGULA VIRGULA PUNCT IFSTMT ELSESTMT FORSTMT DOSTMT WHILESTMT RETURNSTMT PRINT BOOLEAN_AND BOOLEAN_OR BOOLEAN_NOT BOOLEAN_LT BOOLEAN_LTE BOOLEAN_GTE BOOLEAN_EQ BOOLEAN_NEQ ARITMETIC_INCREMENT ARITMETIC_DECREMENT ARITMETIC_ADD ARITMETIC_SUB ARITMETIC_DIV  BOOLEAN_GT ARITMETIC_MUL ARITMETIC_POW
@@ -28,7 +29,9 @@ extern int yylineno;
 
 %type <num> function_argument_list
 
-%left ARITMETIC_ADD ARITMETIC_SUB ARITMETIC_DIV ARITMETIC_MUL ARITMETIC_POW
+%type <arr> function_call_args_list
+
+%left ARITMETIC_ADD ARITMETIC_SUB ARITMETIC_DIV ARITMETIC_MUL ARITMETIC_POW 
 %left BOOLEAN_AND BOOLEAN_OR BOOLEAN_LT BOOLEAN_LTE BOOLEAN_GTE BOOLEAN_EQ BOOLEAN_NEQ BOOLEAN_GT
 
 %right BOOLEAN_NOT 
@@ -119,13 +122,13 @@ available_values: NUMAR { $$ = $1; }
         | boolean_expression { $$ = "1"; } //evaluate boolean
         ;
 
-function_call: NUME_ARBITRAR PARANTEZAROTUNDADESCHISA function_call_args_list PARANTEZAROTUNDAINCHISA { FunctionCall($1); }
-        // | IDENTIFIER PUNCT
+function_call: NUME_ARBITRAR PARANTEZAROTUNDADESCHISA function_call_args_list PARANTEZAROTUNDAINCHISA { FunctionCall($1, $3); }
+        | IDENTIFIER PUNCT NUME_ARBITRAR PARANTEZAROTUNDADESCHISA function_call_args_list PARANTEZAROTUNDAINCHISA { SwitchToContextOfIdentifer($1); FunctionCall($3, $5); ExitContext(); }
         ;
 
 
-function_call_args_list: available_values 
-        | function_call_args_list VIRGULA available_values
+function_call_args_list: available_values { $$ = InitializeCallStackArray(); PushValueToCallStack(&$$, $1); }
+        | function_call_args_list VIRGULA available_values { PushValueToCallStack(&$$, $3); }
         ;
 
 //all thepossible arithemtic expressions
@@ -148,6 +151,8 @@ boolean_expression: custom_available_values BOOLEAN_AND custom_available_values
         | custom_available_values BOOLEAN_NEQ custom_available_values
         | BOOLEAN_NOT custom_available_values
         | PARANTEZAROTUNDADESCHISA boolean_expression PARANTEZAROTUNDAINCHISA
+        | BOOL_TRUE
+        | BOOL_FALSE
         ;
 
 //to be decided what to return and how to manage it...

@@ -44,6 +44,6 @@ typedef struct funcs{
 
 
 typedef struct arrays{
-    char values[150];
+    char* values[150];
     int currentIDX;
 } Array;

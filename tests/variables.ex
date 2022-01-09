@@ -44,12 +44,22 @@ Int PutereMotorOut(Float $zab124,Int $doa423, Char $chx)
 
 }
 
-Int BestCompiler(Int $HyWorld)
+Int BestCompiler(Float $HyWorld, String $Wassup, Int $num1, Int $num2)
+{
+    $HyWorld -> 20;
+}
+
+Int BestCompiler(Int $val1, Int $val2, Int $val3)
 {
     $HyWorld -> 20;
 }
 
 Int PutereMotorOut(Int $zab, Float $doa)
+{
+    $zab -> 200;
+}
+
+Int PutereMotorOut(Int $weDidIt)
 {
     $zab -> 200;
 }
@@ -68,14 +78,17 @@ Object Mercedes{
 
 __main__
 Readonly Float $floatingArray[] -> (12.21, $array[0], 235432.342);
-String $zabogdan5;
+String $zabogdan5 -> "we own the world";
 Int $x -> 124;
 Print("hello from main", 10);
-Hello(10, $x, $array[2], World(12));
+
+BestCompiler(10.12, $zabogdan5, $array[2], PutereMotorOut(12, 124.21));
 
 Mercedes $a;
-$a.$zaBogdan -> ($x + 5) + 6.2 - $floatingArray[1] / PutereMotorOut(2+10*(5 + 2),$x, PutereMotorOut($array[10])) * 21 ** 20;
+$a.$zaBogdan -> ($x + 5) + 6.2 - $floatingArray[1] / BestCompiler(2+10*(5 + 2),$x, PutereMotorOut($array[10])) * 21 ** 20;
 $a.$zaBogdan -> ($x < $deci) && ($x === $deci);
+
+$a.PutereMotor($x, 24.21);
 
 $a.$data -> 13372;
 

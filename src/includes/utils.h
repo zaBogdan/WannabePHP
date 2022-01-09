@@ -93,3 +93,44 @@ char* RemoveQuotesFromString(char* _s)
     _new_s[_len-2] = 0;
     return _new_s;
 }
+
+char* DecideValueType(char* value)
+{
+    int tempValue;
+    float tempFloatVal;
+
+    if(value[0]=='\'')
+    {
+        return "Char";
+    }
+
+    if(value[0]=='\"')
+    {
+         return "String";
+    }   
+
+    if(!strcmp(value, "True") || !strcmp(value, "False"))
+    {
+        return "Boolean";
+    }
+
+    for(int i=0;i<strlen(value);++i)
+    {
+        if(value[i] == '.')
+        {
+            if(strtof(value, NULL) != 0.0F || !strcmp(value, "0") || !strcmp(value, "0.0"))
+            {
+                return "Float";
+            }
+            break;
+        }
+    }
+
+    if(strtol(value, NULL,10) != 0L || value[0] == '0')
+    {
+        return "Int";
+    }
+
+    return "Void";
+
+}
