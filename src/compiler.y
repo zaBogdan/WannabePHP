@@ -13,6 +13,7 @@ extern int yylineno;
 %union{
     int num;
     char* value;
+    Node* astNode;
     Array arr;
 }
 
@@ -25,16 +26,18 @@ extern int yylineno;
 
 %type <value> available_types
 %type <value> available_values
-%type <value> custom_available_values
 
 %type <num> function_argument_list
 
 %type <arr> function_call_args_list
 
+%type <value> allowed_variables boolead_allowed_vars
+%type <astNode> arithmetic_expression
+
 %left ARITMETIC_ADD ARITMETIC_SUB ARITMETIC_DIV ARITMETIC_MUL ARITMETIC_POW 
 %left BOOLEAN_AND BOOLEAN_OR BOOLEAN_LT BOOLEAN_LTE BOOLEAN_GTE BOOLEAN_EQ BOOLEAN_NEQ BOOLEAN_GT
 
-%right BOOLEAN_NOT 
+%right BOOLEAN_NOT
 %%
 
 entry_point: code_structure { printf("Code syntax is correct.\n"); }
@@ -109,16 +112,11 @@ available_types: INTEGER { $$ = $1; }
         ;
 
 //all of these must return strings
-available_values: NUMAR { $$ = $1; }
-        | NUMAR_FLOAT { $$ = $1; }
-        | BOOL_TRUE { $$ = $1; }
-        | BOOL_FALSE { $$ = $1; }
+available_values: allowed_variables { $$ = $1; }
         | QUOTES_STRING { $$ = $1; }
         | CARACTER { $$ = $1; }
-        | IDENTIFIER { $$ = GetValueFromIdentifier($1,0); } 
-        | IDENTIFIER PARANTEZAPATRATADESCHISA NUMAR PARANTEZAPATRATAINCHISA { $$ = GetValueFromIdentifier($1,atoi($3)); } 
-        | function_call { $$ = "0"; } //ValidateFunctionCall
-        | arithemtic_expression { $$ = "1"; } //evaluate expression
+        | boolead_allowed_vars { $$ = $1; }
+        | arithmetic_expression { $$ = EvalAST($1); } //evaluate expression
         | boolean_expression { $$ = "1"; } //evaluate boolean
         ;
 
@@ -131,28 +129,39 @@ function_call_args_list: available_values { $$ = InitializeCallStackArray(); Pus
         | function_call_args_list VIRGULA available_values { PushValueToCallStack(&$$, $3); }
         ;
 
-//all thepossible arithemtic expressions
-arithemtic_expression: custom_available_values ARITMETIC_ADD custom_available_values 
-        | custom_available_values ARITMETIC_SUB custom_available_values
-        | custom_available_values ARITMETIC_DIV custom_available_values
-        | custom_available_values ARITMETIC_POW custom_available_values
-        | custom_available_values ARITMETIC_MUL custom_available_values
-        | PARANTEZAROTUNDADESCHISA arithemtic_expression PARANTEZAROTUNDAINCHISA
+allowed_variables: NUMAR { $$ = $1; }
+        | NUMAR_FLOAT { $$ = $1; }
+        | IDENTIFIER { $$ = GetValueFromIdentifier($1,0); } 
+        | IDENTIFIER PARANTEZAPATRATADESCHISA NUMAR PARANTEZAPATRATAINCHISA { $$ = GetValueFromIdentifier($1,atoi($3)); } 
+        | function_call { $$ = "1"; } //ValidateFunctionCall
         ;
 
+//all thepossible arithemtic expressions
+arithmetic_expression: allowed_variables { $$ = BuildAst(NewNode($1), NULL, NULL); }
+        | arithmetic_expression ARITMETIC_ADD arithmetic_expression { $$ = BuildAst(NewNode("+"), $1, $3); }
+        | arithmetic_expression ARITMETIC_SUB arithmetic_expression { $$ = BuildAst(NewNode("-"), $1, $3); }
+        | arithmetic_expression ARITMETIC_DIV arithmetic_expression { $$ = BuildAst(NewNode("/"), $1, $3); }
+        | arithmetic_expression ARITMETIC_POW arithmetic_expression { $$ = BuildAst(NewNode("**"), $1, $3); }
+        | arithmetic_expression ARITMETIC_MUL arithmetic_expression { $$ = BuildAst(NewNode("*"), $1, $3); }
+        | PARANTEZAROTUNDADESCHISA arithmetic_expression PARANTEZAROTUNDAINCHISA { $$ = BuildAst(NewNode(EvalAST($2)), NULL, NULL); }
+        ;
 
-boolean_expression: custom_available_values BOOLEAN_AND custom_available_values
-        | custom_available_values BOOLEAN_OR custom_available_values
-        | custom_available_values BOOLEAN_LT custom_available_values
-        | custom_available_values BOOLEAN_LTE custom_available_values
-        | custom_available_values BOOLEAN_GT custom_available_values
-        | custom_available_values BOOLEAN_GTE custom_available_values
-        | custom_available_values BOOLEAN_EQ custom_available_values
-        | custom_available_values BOOLEAN_NEQ custom_available_values
-        | BOOLEAN_NOT custom_available_values
+boolead_allowed_vars: BOOL_TRUE { $$ = $1; }
+        | BOOL_FALSE { $$ = $1; }
+        ;
+
+boolean_expression: boolean_expression BOOLEAN_AND boolean_expression
+        | boolean_expression BOOLEAN_OR boolean_expression
+        | boolean_expression BOOLEAN_LT boolean_expression
+        | boolean_expression BOOLEAN_LTE boolean_expression
+        | boolean_expression BOOLEAN_GT boolean_expression
+        | boolean_expression BOOLEAN_GTE boolean_expression
+        | boolean_expression BOOLEAN_EQ boolean_expression
+        | boolean_expression BOOLEAN_NEQ boolean_expression
+        | BOOLEAN_NOT boolean_expression
         | PARANTEZAROTUNDADESCHISA boolean_expression PARANTEZAROTUNDAINCHISA
-        | BOOL_TRUE
-        | BOOL_FALSE
+        | boolead_allowed_vars
+        | arithmetic_expression
         ;
 
 //to be decided what to return and how to manage it...
@@ -183,17 +192,7 @@ declare_and_assign: available_types IDENTIFIER ASSIGN available_values { Declare
         | available_types IDENTIFIER PARANTEZAPATRATADESCHISA PARANTEZAPATRATAINCHISA ASSIGN PARANTEZAROTUNDADESCHISA value_list PARANTEZAROTUNDAINCHISA { DeclareArray($1, $2, true); } //arrays
         ;
 
-custom_available_values: NUMAR { $$ = $1; }
-        | NUMAR_FLOAT { $$ = $1; }
-        | IDENTIFIER { $$ = GetValueFromIdentifier($1,0); } 
-        | IDENTIFIER PARANTEZAPATRATADESCHISA NUMAR PARANTEZAPATRATAINCHISA { $$ = GetValueFromIdentifier($1,atoi($3)); }
-        | function_call { $$ = "0"; } //ValidateFunctionCall
-        | arithemtic_expression { $$ = "0"; } //evaluate expression
-        | boolean_expression { $$ = "1"; } //evaluate boolean
-        ;
-
-
-print_function: PRINT PARANTEZAROTUNDADESCHISA QUOTES_STRING VIRGULA custom_available_values PARANTEZAROTUNDAINCHISA {PrintFunction($3, $5); }
+print_function: PRINT PARANTEZAROTUNDADESCHISA QUOTES_STRING VIRGULA arithmetic_expression PARANTEZAROTUNDAINCHISA {PrintFunction($3, EvalAST($5)); }
         ;
 %%
 

@@ -1,8 +1,17 @@
 __global__
 
 Int $x -> 20;
-Int $vec[] -> (12,42,2,23);
+Int $vec[] -> (12, 42, 2, 23);
+
+__custom_types__
+
+Int Hello()
+{
+    $x -> 20;
+}
 
 __main__
 
-Print("Value is", $x + 10 + 10);
+$x -> (10 + $vec[3]) * 15 + 12.7 + Hello();
+
+Print("Value is", $x);

@@ -116,5 +116,7 @@ void FunctionCall(char* name, Array values)
         sprintf(error, "Function '%s' is only available in %s context. (Current: %s)", signature, functionSignatures[functionPos].context, currentContext);
         yyerror(error);
     }
+
+    //assign the values to the variables
     
 }
