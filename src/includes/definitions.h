@@ -90,4 +90,12 @@ Node* NewNode(char* data);
 Node* BuildAst(Node* root, Node* left, Node* right);
 int EvalASTRecursive(Node* root);
 char* EvalAST(Node* root);
-// char* AddOperation(char* arith, char* val1, char* op, char* val2);
+
+//custom functions
+char* CastIntToAscii(int __a);
+bool GetIntFromAscii(char* _a, char* _b, int* __a, int* __b);
+char* predefined_max(char* __a, char* __b);
+char* predefined_min(char* __a, char* __b);
+char* predefined_len(char* __a);
+char* predefined_gcd(char* __a, char* __b);
+char* predefined_random();

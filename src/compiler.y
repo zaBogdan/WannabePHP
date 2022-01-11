@@ -23,6 +23,7 @@ extern int yylineno;
 
 %token <value> INTEGER FLOAT CHAR STRING BOOL
 %token <value> BOOL_TRUE BOOL_FALSE IDENTIFIER NUME_ARBITRAR NUMAR NUMAR_FLOAT QUOTES_STRING CARACTER
+%token MAX MIN LEN GCD RANDOMINT
 
 %type <value> available_types
 %type <value> available_values
@@ -31,8 +32,9 @@ extern int yylineno;
 
 %type <arr> function_call_args_list
 
-%type <value> allowed_variables boolead_allowed_vars
-%type <astNode> arithmetic_expression
+%type <value> allowed_variables boolead_allowed_vars predefined_functions
+%type <value> pdef_max pdef_min pdef_len pdef_gcd pdef_random
+%type <astNode> arithmetic_expression 
 
 %left ARITMETIC_ADD ARITMETIC_SUB 
 %left ARITMETIC_DIV ARITMETIC_MUL ARITMETIC_POW 
@@ -94,8 +96,9 @@ code_sequence: declarations PUNCTSIVIRGULA
         | print_function PUNCTSIVIRGULA
         | function_call PUNCTSIVIRGULA
         | stmt_instructions
+        | predefined_functions PUNCTSIVIRGULA
         ;
-
+        
 stmt_instructions: IFSTMT PARANTEZAROTUNDADESCHISA boolean_expression PARANTEZAROTUNDAINCHISA stmt_code_format
         | IFSTMT PARANTEZAROTUNDADESCHISA boolean_expression PARANTEZAROTUNDAINCHISA stmt_code_format ELSESTMT stmt_code_format
         | DOSTMT stmt_code_format WHILESTMT PARANTEZAROTUNDADESCHISA boolean_expression PARANTEZAROTUNDAINCHISA
@@ -135,6 +138,7 @@ allowed_variables: NUMAR { $$ = $1; }
         | IDENTIFIER { $$ = GetValueFromIdentifier($1,0); } 
         | IDENTIFIER PARANTEZAPATRATADESCHISA NUMAR PARANTEZAPATRATAINCHISA { $$ = GetValueFromIdentifier($1,atoi($3)); } 
         | IDENTIFIER PUNCT {SwitchToContextOfIdentifer($1);} IDENTIFIER { $$ = GetValueFromIdentifier($4,0); ExitContext();}
+        | predefined_functions { $$ = $1; }
         | function_call { $$ = "1"; } //ValidateFunctionCall
         ;
 
@@ -146,6 +150,25 @@ arithmetic_expression: allowed_variables { $$ = BuildAst(NewNode($1), NULL, NULL
         | arithmetic_expression ARITMETIC_POW arithmetic_expression { $$ = BuildAst(NewNode("**"), $1, $3); }
         | arithmetic_expression ARITMETIC_MUL arithmetic_expression { $$ = BuildAst(NewNode("*"), $1, $3); }
         | PARANTEZAROTUNDADESCHISA arithmetic_expression PARANTEZAROTUNDAINCHISA { $$ = BuildAst(NewNode(EvalAST($2)), NULL, NULL); }
+        ;
+
+predefined_functions: pdef_max { $$ = $1; }
+        | pdef_min { $$ = $1; }
+        | pdef_len { $$ = $1; }
+        | pdef_gcd { $$ = $1; }
+        | pdef_random { $$ = $1; }
+        ;
+
+pdef_max: MAX PARANTEZAROTUNDADESCHISA available_values VIRGULA available_values PARANTEZAROTUNDAINCHISA { $$ = predefined_max($3,$5); }
+        ;
+pdef_min: MIN PARANTEZAROTUNDADESCHISA available_values VIRGULA available_values PARANTEZAROTUNDAINCHISA { $$ = predefined_min($3,$5); }
+        ;
+pdef_len: LEN PARANTEZAROTUNDADESCHISA available_values PARANTEZAROTUNDAINCHISA { $$ = predefined_len($3); }
+        ;
+
+pdef_gcd: GCD PARANTEZAROTUNDADESCHISA available_values VIRGULA available_values PARANTEZAROTUNDAINCHISA {$$ = predefined_gcd($3, $5); }
+        ;
+pdef_random: RANDOMINT PARANTEZAROTUNDADESCHISA PARANTEZAROTUNDAINCHISA {$$ = predefined_random(); }
         ;
 
 boolead_allowed_vars: BOOL_TRUE { $$ = $1; }

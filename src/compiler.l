@@ -42,6 +42,11 @@
 
 
 "Print" {return PRINT;}
+"Max" {return MAX;}
+"Min" {return MIN;}
+"Len" {return LEN;}
+"GCD" {return GCD;}
+"RandomInt" {return RANDOMINT;}
 
 "&&" {return BOOLEAN_AND;}
 "||" {return BOOLEAN_OR;}

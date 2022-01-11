@@ -89,6 +89,8 @@ $a.$zaBogdan -> ($x + 5) + 6.2 - $floatingArray[1] / BestCompiler(2 + 10 * ( 5 +
 Print("Output of expr is", $a.$zaBogdan);
 $a.$zaBogdan -> ($x < $deci) && ($x === $deci);
 
+
+Print("Len of string is:", RandomInt());
 $a.PutereMotor($x, 24.21);
 
 $a.$data -> 13372;
