@@ -28,7 +28,7 @@ extern int yylineno;
 %type <value> available_types
 %type <value> available_values
 
-%type <num> function_argument_list
+%type <num> function_argument_list function_call
 
 %type <arr> function_call_args_list
 
@@ -124,8 +124,8 @@ available_values: allowed_variables { $$ = $1; }
         | boolean_expression { $$ = "1"; } //evaluate boolean
         ;
 
-function_call: NUME_ARBITRAR PARANTEZAROTUNDADESCHISA function_call_args_list PARANTEZAROTUNDAINCHISA { FunctionCall($1, $3); }
-        | IDENTIFIER PUNCT NUME_ARBITRAR PARANTEZAROTUNDADESCHISA function_call_args_list PARANTEZAROTUNDAINCHISA { SwitchToContextOfIdentifer($1); FunctionCall($3, $5); ExitContext(); }
+function_call: NUME_ARBITRAR PARANTEZAROTUNDADESCHISA function_call_args_list PARANTEZAROTUNDAINCHISA { $$ = FunctionCall($1, $3); }
+        | IDENTIFIER PUNCT NUME_ARBITRAR PARANTEZAROTUNDADESCHISA function_call_args_list PARANTEZAROTUNDAINCHISA { SwitchToContextOfIdentifer($1); $$ = FunctionCall($3, $5); ExitContext(); }
         ;
 
 
@@ -139,7 +139,7 @@ allowed_variables: NUMAR { $$ = $1; }
         | IDENTIFIER PARANTEZAPATRATADESCHISA NUMAR PARANTEZAPATRATAINCHISA { $$ = GetValueFromIdentifier($1,atoi($3)); } 
         | IDENTIFIER PUNCT {SwitchToContextOfIdentifer($1);} IDENTIFIER { $$ = GetValueFromIdentifier($4,0); ExitContext();}
         | predefined_functions { $$ = $1; }
-        | function_call { $$ = "1"; } //ValidateFunctionCall
+        | function_call { $$ = GetValueFromFunctionCall($1); } //ValidateFunctionCall
         ;
 
 //all thepossible arithemtic expressions

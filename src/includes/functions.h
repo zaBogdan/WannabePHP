@@ -17,6 +17,11 @@ int GetFunction(char* signature)
     return -1;
 }
 
+char* GetValueFromFunctionCall(int functionPos)
+{
+    return DefaultValueForType(functionSignatures[functionPos].returnType);
+}
+
 void DeclareFunction(char* type, char* name, int arguments)
 {
     //build signature & construct new Object
@@ -83,7 +88,7 @@ void PushValueToCallStack(Array* arr, char* value)
     ++arr->currentIDX;
 }
 
-void FunctionCall(char* name, Array values)
+int FunctionCall(char* name, Array values)
 {
     //build function signature
     char signature[400], error[200];
@@ -127,4 +132,6 @@ void FunctionCall(char* name, Array values)
         AssignValue(storedData[functionSignatures[functionPos].parametersIDX[idx]].name, values.values[idx],0);
     }
     AssignValueIgnoreContext = false;
+
+    return functionPos;
 }

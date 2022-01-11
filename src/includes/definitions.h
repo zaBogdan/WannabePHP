@@ -34,6 +34,7 @@ int GetTypeFromString(char* strType);
 char* RemoveQuotesFromString(char* _s);
 char* GetTypeFromInt(int type);
 char* DecideValueType(char* value);
+char* DefaultValueForType(char* type);
 
 // context functions
 void SwitchContext(char* name);
@@ -71,12 +72,13 @@ char* GetValueFromIdentifier(char* key, int pos);
 //function related stuff
 int GetFunction(char* signature);
 void AddFunction(Function func);
+char* GetValueFromFunctionCall(int functionPos);
 Array InitializeCallStackArray();
 void PushValueToCallStack(Array* arr, char* value);
 
 //actual functions for functions
 void DeclareFunction(char* type, char* name, int arguments);
-void FunctionCall(char* name, Array values);
+int FunctionCall(char* name, Array values);
 
 
 //Symbol table

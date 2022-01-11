@@ -49,7 +49,7 @@ Int BestCompiler(Float $HyWorld, String $Wassup, Int $num1, Int $num2)
     $HyWorld -> 20;
 }
 
-Int BestCompiler(Int $val1, Int $val2, Int $val3)
+String BestCompiler(Int $val1, Int $val2, Int $val3)
 {
     $HyWorld -> 20;
 }
@@ -85,7 +85,7 @@ Print("hello from main", 10);
 BestCompiler(10.12, $zabogdan5, $array[2], PutereMotorOut(12, 124.21));
 
 Mercedes $a;
-$a.$zaBogdan -> ($x + 5) + 6.2 - $floatingArray[1] / BestCompiler(2 + 10 * ( 5 + 2 ) ,$x, PutereMotorOut($array[10])) * 21 ** 20;
+$a.$zaBogdan -> ($x + 5) + 6.2 - BestCompiler(20.0 ,$zabogdan5, PutereMotorOut($array[10]), 2 + 10 * ( 5 + 2 )) / $floatingArray[1] * 21 ** 20;
 Print("Output of expr is", $a.$zaBogdan);
 $a.$zaBogdan -> ($x < $deci) && ($x === $deci);
 

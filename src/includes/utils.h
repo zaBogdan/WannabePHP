@@ -94,6 +94,33 @@ char* RemoveQuotesFromString(char* _s)
     return _new_s;
 }
 
+char* DefaultValueForType(char* type)
+{
+    char error[200];
+    switch(GetTypeFromString(type))
+    {
+        case TYPE_INTEGER:
+            return "0";
+
+        case TYPE_FLOAT:
+            return "0.0";
+        
+        case TYPE_CHAR:
+            return "'a'";
+
+        case TYPE_STRING:
+            return "\"(null)\"";
+        
+        case TYPE_BOOL:
+            return "False";
+        
+        default:
+            sprintf(error,"No type could be found for '%s'", type);
+    }
+
+    return "";
+}
+
 char* DecideValueType(char* value)
 {
     int tempValue;
