@@ -1,6 +1,6 @@
 [global] Signature: 'PutereMotorOut(Float,Int,Char)', Return type: Int, with parameters: $zab124, $doa423, $chx
 [global] Signature: 'BestCompiler(Float,String,Int,Int)', Return type: Int, with parameters: $HyWorld, $Wassup, $num1, $num2
-[global] Signature: 'BestCompiler(Int,Int,Int)', Return type: Int, with parameters: $val1, $val2, $val3
+[global] Signature: 'BestCompiler(Int,Int,Int)', Return type: String, with parameters: $val1, $val2, $val3
 [global] Signature: 'PutereMotorOut(Int,Float)', Return type: Int, with parameters: $zab, $doa
 [global] Signature: 'PutereMotorOut(Int)', Return type: Int, with parameters: $weDidIt
 [Mercedes.] Signature: 'PutereMotor(Int,Float)', Return type: Int, with parameters: $zab2, $doa2

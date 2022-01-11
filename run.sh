@@ -2,7 +2,11 @@
 
 rootDir=src/
 buildDir=build/
+tabelsDir=tabels
 
-lex -t $rootDir$1.l > build/lex.yy.c
-yacc -d -v $rootDir$1.y -o build/y.tab.c
+mkdir -p ${buildDir}
+mkdir -p ${tabelsDir}
+
+lex -t $rootDir$1.l > ${buildDir}/lex.yy.c
+yacc -d -v $rootDir$1.y -o ${buildDir}/y.tab.c
 gcc -Wmacro-redefined -ll -o compiler -I${rootDir}/includes ${buildDir}lex.yy.c 

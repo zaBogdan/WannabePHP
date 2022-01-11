@@ -2,7 +2,7 @@ __global__
 Boolean $bool -> True;
 Int $deci -> 125;
 Float $wavy;
-String $stringy -> "Hello world bitch";
+String $stringy -> "Hello world dude";
 Char $charrr -> 'c';
 
 
@@ -15,7 +15,7 @@ Int PutereMotorOut(Float $zab124,Int $doa423, Char $chx)
     Int $zab2042 -> 200;
 
     daca($zab2042 < 10){
-        Print("Hello mommy", $zab2042);
+        Print("Hatz john", $zab2042);
     }
 
     daca(!$zab2042){
@@ -78,7 +78,7 @@ Object Mercedes{
 
 __main__
 Readonly Float $floatingArray[] -> (12.21, $array[0], 235432.342);
-String $zabogdan5 -> "we own the world";
+String $zabogdan5 -> "We own the world";
 Int $x -> 124;
 Print("hello from main", 10);
 
@@ -98,4 +98,4 @@ $a.$data -> 13372;
 $array[12] -> 1337;
 Print("Hello world:" , $x+5);
 
-$zabogdan5 -> "zaBogdan is literally the best";
+$zabogdan5 -> "this compiler is literally the best";

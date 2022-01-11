@@ -1,3 +1,5 @@
-[global] Identifier: $x, Type: Int, Value: 508
+[global] Identifier: $x, Type: Int, Value: 507
 [global] Identifier: $vec, Type: Array Int, Values: (12, 42, 2, 23)
-[Hello] Identifier: $z, Type: Int, Value: 20
+[Hello] Identifier: $z, Type: Int, Value: 12
+[main] Identifier: $data, Type: String, Value: "We are testing funcs"
+[main] Identifier: $y, Type: Int, Value: 717
