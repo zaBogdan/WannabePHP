@@ -34,7 +34,8 @@ extern int yylineno;
 %type <value> allowed_variables boolead_allowed_vars
 %type <astNode> arithmetic_expression
 
-%left ARITMETIC_ADD ARITMETIC_SUB ARITMETIC_DIV ARITMETIC_MUL ARITMETIC_POW 
+%left ARITMETIC_ADD ARITMETIC_SUB 
+%left ARITMETIC_DIV ARITMETIC_MUL ARITMETIC_POW 
 %left BOOLEAN_AND BOOLEAN_OR BOOLEAN_LT BOOLEAN_LTE BOOLEAN_GTE BOOLEAN_EQ BOOLEAN_NEQ BOOLEAN_GT
 
 %right BOOLEAN_NOT
@@ -133,6 +134,7 @@ allowed_variables: NUMAR { $$ = $1; }
         | NUMAR_FLOAT { $$ = $1; }
         | IDENTIFIER { $$ = GetValueFromIdentifier($1,0); } 
         | IDENTIFIER PARANTEZAPATRATADESCHISA NUMAR PARANTEZAPATRATAINCHISA { $$ = GetValueFromIdentifier($1,atoi($3)); } 
+        | IDENTIFIER PUNCT {SwitchToContextOfIdentifer($1);} IDENTIFIER { $$ = GetValueFromIdentifier($4,0); ExitContext();}
         | function_call { $$ = "1"; } //ValidateFunctionCall
         ;
 
@@ -204,10 +206,11 @@ void yyerror(char * s){
 int main(int argc, char** argv){
      yyin=fopen(argv[1],"r");
      yyparse();
-     FILE* variableTable = fopen("symbol_table.txt", "w");
+
+     FILE* variableTable = fopen("tabels/symbol_table.txt", "w");
      DumpObjectsToFile(variableTable);
 
-     FILE* functionTable = fopen("symbol_table_functions.txt", "w");
+     FILE* functionTable = fopen("tabels/symbol_table_functions.txt", "w");
      DumpFunctionsToFile(functionTable);
 
 return 0;

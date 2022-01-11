@@ -25,6 +25,12 @@ Node* NewNode(char* data)
         node->data = strtol(data, NULL, 10);
     }
 
+    if(!strcmp(dataType, "Bool"))
+    {
+        node->type = 1;
+        node->data = (!strcmp(dataType, "True") ? 1 : 0);
+    }
+
     if(strchr("+-/*", data[0]) != NULL)
     {
         node->type = 2;

@@ -117,6 +117,14 @@ void FunctionCall(char* name, Array values)
         yyerror(error);
     }
 
+    AssignValueIgnoreContext = true;
     //assign the values to the variables
-    
+    for(int idx = 0; idx < functionSignatures[functionPos].paramCount; ++idx)
+    {
+        #ifdef __DEBUG__
+        printf("[ %s ]Assigning to %s=%s\n",functionSignatures[functionPos].name, storedData[functionSignatures[functionPos].parametersIDX[idx]].name, values.values[idx]);
+        #endif
+        AssignValue(storedData[functionSignatures[functionPos].parametersIDX[idx]].name, values.values[idx],0);
+    }
+    AssignValueIgnoreContext = false;
 }

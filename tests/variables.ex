@@ -86,6 +86,7 @@ BestCompiler(10.12, $zabogdan5, $array[2], PutereMotorOut(12, 124.21));
 
 Mercedes $a;
 $a.$zaBogdan -> ($x + 5) + 6.2 - $floatingArray[1] / BestCompiler(2 + 10 * ( 5 + 2 ) ,$x, PutereMotorOut($array[10])) * 21 ** 20;
+Print("Output of expr is", $a.$zaBogdan);
 $a.$zaBogdan -> ($x < $deci) && ($x === $deci);
 
 $a.PutereMotor($x, 24.21);

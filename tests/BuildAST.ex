@@ -5,13 +5,13 @@ Int $vec[] -> (12, 42, 2, 23);
 
 __custom_types__
 
-Int Hello()
+Int Hello(Int $z)
 {
-    $x -> 20;
+    $z -> 20;
 }
 
 __main__
 
-$x -> (10 + $vec[3]) * 15 + 12.7 + Hello();
+$x -> (10 + $vec[3]) * 15 + 12.7 + Hello(12);
 
 Print("Value is", $x);

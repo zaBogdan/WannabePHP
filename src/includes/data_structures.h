@@ -142,7 +142,7 @@ void AssignValue(char* key, char* value, int pos)
     }
 
     //Check if the variable is visible in your scope.
-    if(!IsInScope(storedData[variableLocation].context))
+    if(!IsInScope(storedData[variableLocation].context) && !AssignValueIgnoreContext)
     {
         sprintf(error, "Variabile '%s' was declared in '%s' context. We are in: %s",key,storedData[variableLocation].context, currentContext);
         yyerror(error);

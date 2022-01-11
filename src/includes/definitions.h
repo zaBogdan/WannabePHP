@@ -21,6 +21,7 @@ char* vectorList[150];
 uint16_t identifiersIDX = 0, storedDataIDX = 0, vectorListIDX = 0, customObjectsIDX = 0, 
         customTypesIDX = 0, functionSignaturesIDX = 0;
 
+bool AssignValueIgnoreContext = false;
 char types[10][10] = {"Int", "Float", "Char", "String", "Boolean", "Void"};
 //bsion definitions
 int yylex();
