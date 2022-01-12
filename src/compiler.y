@@ -32,9 +32,9 @@ extern int yylineno;
 
 %type <arr> function_call_args_list
 
-%type <value> allowed_variables boolead_allowed_vars predefined_functions
+%type <value> allowed_variables predefined_functions boolean_expression
 %type <value> pdef_max pdef_min pdef_len pdef_gcd pdef_random
-%type <astNode> arithmetic_expression 
+%type <astNode> arithmetic_expression  
 
 %left ARITMETIC_ADD ARITMETIC_SUB 
 %left ARITMETIC_DIV ARITMETIC_MUL ARITMETIC_POW 
@@ -116,12 +116,9 @@ available_types: INTEGER { $$ = $1; }
         ;
 
 //all of these must return strings
-available_values: allowed_variables { $$ = $1; }
-        | QUOTES_STRING { $$ = $1; }
-        | CARACTER { $$ = $1; }
-        | boolead_allowed_vars { $$ = $1; }
-        | arithmetic_expression { $$ = EvalAST($1); } //evaluate expression
-        | boolean_expression { $$ = "1"; } //evaluate boolean
+available_values: allowed_variables { $$ = $1; } 
+        | PARANTEZAPATRATADESCHISA arithmetic_expression PARANTEZAPATRATAINCHISA{ $$ = EvalAST($2); } //evaluate expression
+        | PARANTEZAPATRATADESCHISA PARANTEZAPATRATADESCHISA boolean_expression PARANTEZAPATRATAINCHISA PARANTEZAPATRATAINCHISA { $$ = $3; } //evaluate boolean
         ;
 
 function_call: NUME_ARBITRAR PARANTEZAROTUNDADESCHISA function_call_args_list PARANTEZAROTUNDAINCHISA { $$ = FunctionCall($1, $3); }
@@ -135,6 +132,10 @@ function_call_args_list: available_values { $$ = InitializeCallStackArray(); Pus
 
 allowed_variables: NUMAR { $$ = $1; }
         | NUMAR_FLOAT { $$ = $1; }
+        | QUOTES_STRING { $$ = $1; }
+        | CARACTER { $$ = $1; }
+        | BOOL_TRUE { $$ = $1; }
+        | BOOL_FALSE { $$ = $1; }
         | IDENTIFIER { $$ = GetValueFromIdentifier($1,0); } 
         | IDENTIFIER PARANTEZAPATRATADESCHISA NUMAR PARANTEZAPATRATAINCHISA { $$ = GetValueFromIdentifier($1,atoi($3)); } 
         | IDENTIFIER PUNCT {SwitchToContextOfIdentifer($1);} IDENTIFIER { $$ = GetValueFromIdentifier($4,0); ExitContext();}
@@ -171,22 +172,16 @@ pdef_gcd: GCD PARANTEZAROTUNDADESCHISA available_values VIRGULA available_values
 pdef_random: RANDOMINT PARANTEZAROTUNDADESCHISA PARANTEZAROTUNDAINCHISA {$$ = predefined_random(); }
         ;
 
-boolead_allowed_vars: BOOL_TRUE { $$ = $1; }
-        | BOOL_FALSE { $$ = $1; }
-        ;
-
-boolean_expression: boolean_expression BOOLEAN_AND boolean_expression
-        | boolean_expression BOOLEAN_OR boolean_expression
-        | boolean_expression BOOLEAN_LT boolean_expression
-        | boolean_expression BOOLEAN_LTE boolean_expression
-        | boolean_expression BOOLEAN_GT boolean_expression
-        | boolean_expression BOOLEAN_GTE boolean_expression
-        | boolean_expression BOOLEAN_EQ boolean_expression
-        | boolean_expression BOOLEAN_NEQ boolean_expression
-        | BOOLEAN_NOT boolean_expression
-        | PARANTEZAROTUNDADESCHISA boolean_expression PARANTEZAROTUNDAINCHISA
-        | boolead_allowed_vars
-        | arithmetic_expression
+boolean_expression: boolean_expression BOOLEAN_AND boolean_expression {$$ = "0"; }
+        | boolean_expression BOOLEAN_OR boolean_expression {$$ = "0"; }
+        | boolean_expression BOOLEAN_LT boolean_expression {$$ = "0"; }
+        | boolean_expression BOOLEAN_LTE boolean_expression {$$ = "0"; }
+        | boolean_expression BOOLEAN_GT boolean_expression {$$ = "0"; }
+        | boolean_expression BOOLEAN_GTE boolean_expression {$$ = "0"; }
+        | boolean_expression BOOLEAN_EQ boolean_expression {$$ = "0"; }
+        | boolean_expression BOOLEAN_NEQ boolean_expression {$$ = "0"; }
+        | BOOLEAN_NOT boolean_expression {$$ = "0"; }
+        | arithmetic_expression { $$ = EvalAST($1); }
         ;
 
 //to be decided what to return and how to manage it...

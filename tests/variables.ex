@@ -37,10 +37,7 @@ Int PutereMotorOut(Float $zab124,Int $doa423, Char $chx)
     }
 
     Int $xx;
-    pentru($xx -> 0; $xx < 10; $xx -> $xx + 1)
-    {
-        $array[1] -> 2;
-    }
+
 
 }
 
@@ -85,10 +82,10 @@ Print("hello from main", 10);
 BestCompiler(10.12, $zabogdan5, $array[2], PutereMotorOut(12, 124.21));
 
 Mercedes $a;
-$a.$zaBogdan -> ($x + 5) + 6.2 - BestCompiler(20.0 ,$zabogdan5, PutereMotorOut($array[10]), 2 + 10 * ( 5 + 2 )) / $floatingArray[1] * 21 ** 20;
+$a.$zaBogdan -> [ ($x + 5) + 6.2 - BestCompiler(20.0 ,$zabogdan5, PutereMotorOut($array[10]), [ 2 + 10 * ( 5 + 2 ) ] ) / $floatingArray[1] * 21 ** 20 ];
 Print("Output of expr is", $a.$zaBogdan);
-$a.$zaBogdan -> ($x < $deci) && ($x === $deci);
-
+$a.$zaBogdan -> [[ $x < $deci  && $x === $deci ]] ;
+$a.PutereMotor(10, 20.20);
 
 Print("Len of string is:", RandomInt());
 $a.PutereMotor($x, 24.21);

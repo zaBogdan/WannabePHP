@@ -41,6 +41,7 @@ Node* NewNode(char* data)
 
     if(node->type == -1)
     {
+        printf("Value is: %s\n",data);
         sprintf(error, "Expression can only have int/float (casted as int) type. You passed %s type.", dataType);
         yyerror(error);
     }
