@@ -1,5 +1,4 @@
-# LFAC - Compiler 
-
+# Wannabe PHP 
 How to install YACC and LEX: [Here](https://faculty.ksu.edu.sa/sites/default/files/lex_and_yacc_installation.pdf)
 
 Mark: 10
